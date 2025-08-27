@@ -4,7 +4,7 @@ def calculateI(p):
     return math.log2(1/p); 
 
 def getIDistribution(P):
-    return [calculateI(item) for item in l]
+    return [calculateI(item) for item in P]
 
 def calculateH(P):
     return sum ([ 
