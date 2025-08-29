@@ -1,29 +1,18 @@
 import math
 
-def calculateI(p):
-    return math.log2(1/p); 
+def calculateI(pi: float) -> float:
+    return math.log2(1/pi); 
 
-def getIDistribution(P):
-    return [calculateI(item) for item in P]
+def calculateH(P: list) -> float:
+    return sum([
+        pi*calculateI(pi) 
+        for pi in P
+    ])
 
-def calculateH(P):
-    return sum ([ 
-        Pi * Ii
-        for Pi, Ii in  
-        zip(P, getIDistribution(P))
-    ]); 
+def main():
+    P = [0.5 , 0.2, 0.3]
 
-"""
-def calculateH(P):
-    H = 0
-    i = 0
+    print( [calculateI(pi) for  pi in P] )
+    print( calculateH(P) )
 
-    for item in getIDistribution(p):
-        H += P[i] * item
-        i += 1;
-
-"""
-l = [0.5 , 0.2, 0.3]
-
-print( getIDistribution(l) )
-print( calculateH(l) )
+main()
