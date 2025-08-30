@@ -13,7 +13,7 @@ def getBinaryP( w: float ) -> list:
     return [w, 1 - w]
 
 def main():
-    rawData = float(input("w: "))
+    w = float(input("w: "))
     P = getBinaryP( w )
     
 
