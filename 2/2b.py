@@ -1,36 +1,50 @@
 import random
 
-def generateAcumulatedGaps( probability ):
+def montecarloIntervals( P: list ) -> list:
     last = 0
     result = []
-    for p in probability:
-        result.append([last, last+p])
-        last = last+p
+
+    for pi in P:
+        result.append((last, last+pi))
+        last = last+pi
         
     return result
 
-def simulateSimbol( symbols, gaps ):
+def randomIndexByInterval(intervals: list[tuple]):
     rdm = random.uniform(0, 1)
     i = 0
-    while (i < len(gaps) and not (gaps[i][0] <= rdm and rdm <= gaps[i][1])):
+    while i < len(intervals) and not (intervals[i][0] <= rdm and rdm <= intervals[i][1]):
         i += 1
-        
-    return symbols[i]
 
-def simulateFuente( symbols, probability, iterations):
-    gaps = generateAcumulatedGaps(probability)
+    return min(i, len(intervals)-1)
+
+def simulateSymbol( symbols: str, intervals: list[tuple] ) -> str:        
+    return symbols[ randomIndexByInterval(intervals) ]
+
+def simulateFuente( S: dict, iteration: int) -> str:
+    intervals = montecarloIntervals( list(S.values()) )
     fuente = []
 
-    while (iterations):
-        fuente.append( simulateSimbol(symbols, gaps) )
-        iterations -= 1
+    while (iteration):
+        fuente.append( simulateSymbol( list(S.keys()), intervals ) )
+        iteration -= 1
     
-    return fuente
+    return ' '.join(fuente)
 
-distri = [
-    ['A', 'a', 'b', 'c', 'z', 'az', 'lorem'], 
-    [0.125, 0.25, 0.1875, 0.125, 0.125, 0.125, 0.0625]
-]
 
-result = simulateFuente(distri[0], distri[1], 30)
-print(result)
+
+def main():
+    S = {
+        'A': 0.125, 
+        'a': 0.25, 
+        'b': 0.1875, 
+        'c': 0.125, 
+        'z': 0.125, 
+        'az': 0.125, 
+        'lorem': 0.0625
+    }
+
+    fuente = simulateFuente(S, 30)
+    print(fuente)
+
+main()
