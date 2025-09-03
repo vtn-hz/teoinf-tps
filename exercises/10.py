@@ -1,5 +1,5 @@
 
-def generateExtensions(alf: list, prob: list, n: int):
+def generateExtensions(alf: list, prob: list, n: int) -> list:
     if n == 1:
         return alf, prob
     
