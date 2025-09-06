@@ -1,25 +1,3 @@
-import math
-
-def getTraspuesta(M: list[list]) -> list[list]:
-    return [list(row) for row in zip(*M)]
-
-def calculateI(pi: float) -> float:
-    return math.log2(1/pi); 
-
-def calculateHMarkov(M :list[list], V: tuple) -> float:
-    M_t = getTraspuesta(M)
-    
-    result = 0
-    for vi, caseA in zip(V, M_t):
-        result += vi*sum([
-            caseB*calculateI( caseB ) 
-            if caseB > 0
-            else 0
-            for caseB in caseA 
-        ])
-
-    return result
-
 def getVEstacionarioInit() -> tuple:
     return (1/3, 1/3, 1/3) 
 
@@ -55,18 +33,3 @@ def getVEstacionario(M: list[list]) -> tuple:
         V = normalize(operate(M, V))
     
     return V
-
-def main():
-    M = [
-        [0.58, 0.43, 0.3],
-        [0.17, 0.53, 0.1],
-        [0.25, 0.14, 0.6]
-    ]
-
-    V = getVEstacionario(M)
-
-    print( V )
-    print( operate(M, V) )
-    print( calculateHMarkov(M, V) )
-    
-main()
