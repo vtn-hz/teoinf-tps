@@ -6,10 +6,10 @@ def getTolerancia() -> float:
 
 def operate(M: list[list], V: tuple) -> tuple:
     return tuple([
-        sum([ vi*mij for vi, mij in zip(M[0], V)]),
-        sum([ vi*mij for vi, mij in zip(M[1], V)]),
-        sum([ vi*mij for vi, mij in zip(M[2], V)]),
+        sum([ vi*mij for vi, mij in zip(row, V)])
+        for row in M       
     ])
+
 
 def normalize(V: tuple) -> tuple:
     s = sum(V)

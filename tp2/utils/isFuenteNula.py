@@ -18,16 +18,3 @@ def isFuenteNula(M: list[list], T: float) -> bool:
         i += 1
 
     return result
-
-def main():
-    M = [
-        [0.43, 0.43, 0.43],
-        [0.50, 0.53, 0.51],
-        [0.6, 0.6, 0.6]
-    ]
-
-    T = 0.01
-
-    print( isFuenteNula(M, T) )
-
-main()
