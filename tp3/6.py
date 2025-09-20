@@ -46,8 +46,7 @@ def hasSubfixes(codes: list):
 
     return False
 
-def main():
-    val = eval( input("S: ") )
+def main(val):
 
     if hasRepeated(val):
         print("Es bloque")
@@ -62,5 +61,8 @@ def main():
     else:
         print("Es no-singular")
 
-main()
+codigo1 = ["1", "01", "001", "0001"]
+
+
+main(codigo1)
 
