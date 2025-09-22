@@ -1,14 +1,6 @@
-import math
+exec(open("./utils/fuente_nula/calculateH.py").read())
 
-def calculateI(pi: float) -> float:
-    return math.log2(1/pi); 
-
-def calculateH(P: list) -> float:
-    return sum([
-        pi*calculateI(pi) 
-        for pi in P
-    ])
-
+# fuente binaria
 def getBinaryP( w: float ) -> list:
     return [w, 1 - w]
 

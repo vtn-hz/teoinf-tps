@@ -1,8 +1,6 @@
-import math
+exec(open("./utils/fuente_nula/calculateI.py").read())
 
-def calculateI(pi: float) -> float:
-    return math.log2(1/pi); 
-
+# entropía: H = Σ pi * I2(pi)
 def calculateH(P: list) -> float:
     return sum([
         pi*calculateI(pi) 

@@ -1,13 +1,5 @@
-import math
+exec(open("./utils/fuente_nula/calculateH.py").read())
 
-def calculateI(pi: float) -> float:
-    return math.log2(1/pi); 
-
-def calculateH(P: list) -> float:
-    return sum([
-        pi*calculateI(pi) 
-        for pi in P
-    ])
 
 def main():
     P = [0.5 , 0.2, 0.3]

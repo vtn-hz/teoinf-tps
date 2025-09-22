@@ -1,27 +1,16 @@
-
-def generateExtensions(alf: list, prob: list, n: int) -> list:
-    if n == 1:
-        return alf, prob
-    
-    P = []
-    S = []
-
-    prevS, prevP = generateExtensions(alf, prob, n-1)
-    
-    for i, phrase  in enumerate(prevS):
-        for j, symbol in enumerate(alf):
-            S.append( phrase + symbol )
-            P.append( prevP[i] * prob[j] )
-    return S, P 
+exec(open("./utils/fuente_nula/extensiones/extensionGenerator.py").read())
 
 def main():
     S = ['1', '2', '3', '4', '5', '6']
     Sp = [1/6]*6
     n = int( input('n: ') )
 
-    extensions = generateExtensions(S, Sp, n)
+    SQ = dict(zip(S, Sp))
 
-    print(dict(zip(extensions[0], extensions[1])))
+    extensions = generateExtensionsFromLL(S, Sp, n)
+    extensionsQ = generateExtensionsFromD(SQ, n)
+
+    print(extensionsQ)
     print("\n")
 
 main()
