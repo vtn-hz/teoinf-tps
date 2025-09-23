@@ -1,7 +1,5 @@
 exec(open("./utils/fuente_no_nula/fuente_markov/generateMatrixTransicion.py").read())
 exec(open("./utils/fuente_no_nula/fuente_markov/fuenteNulaDetection.py").read())
-
-
 exec(open("./utils/fuente_no_nula/fuente_markov/calculateHFuenteMarkoviana.py").read())
 exec(open("./utils/fuente_no_nula/fuente_markov/calculateVEstacionario.py").read())
 
