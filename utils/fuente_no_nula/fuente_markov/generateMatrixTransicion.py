@@ -4,18 +4,19 @@ exec(open("./utils/matrix.py").read())
 def generateMatrixTransicion(message: str) -> list[list]:
     symbols = sorted(set( message ))
     n = len(symbols)
-    M = []
+    M = getMatrixZeros(n, n)
 
-    for i in range( n ):
-        total = 0
-        M.append([])
-        for j in range( n ):
-            symbolRepetitions = message.count(symbols[i] + symbols[j])
-            total += symbolRepetitions
-            
-            M[i].append( symbolRepetitions )
-               
-        for j in range( n ):
-            M[i][j] /= total if total != 0 else 1
+    sumCols = [0 for _ in range(n)]
+
+    for i in range( len(message) - 1 ):
+        col = symbols.index( message[i] )
+        row = symbols.index( message[i + 1] )
+
+        M[row][col] += 1
+        sumCols[col] += 1
+
+    for j in range(n):
+        for i in range(n):
+            M[i][j] /= sumCols[j] if sumCols[j] > 0 else 1
     
-    return getMatrixTraspuesta(M)
+    return M
