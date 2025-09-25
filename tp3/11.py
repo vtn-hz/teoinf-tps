@@ -1,37 +1,11 @@
-import math
-
-#a 
-def getAlfabetoCod (cods: list) -> list:
-    alfCod = set()
-
-    for cod in cods:
-        alfCod.update(cod)
-
-    return list(alfCod)
-
-def calcH( r: int, pbs:list ) -> float:
-    return sum([
-        pbi * math.log(1/pbi, r)
-        for pbi in pbs
-    ])
-
-#b
-def getLengths (cods: list) -> list:
-    return [ len(cod) for cod in cods ] 
-
-def getLongitudMediaCodigo( pbs: list, cods: list ) -> float:
-    l = getLengths( cods )
-
-    return sum([
-        pbi * li
-        for pbi, li in zip(pbs, l)
-    ])
+exec(open("./utils/codigos/calculateHr.py").read())
+exec(open("./utils/codigos/metadataCodigo.py").read())
 
 def main(cods, pbs):
 
-    lmed = getLongitudMediaCodigo( pbs, cods )
+    lmed = getLengthMedCodigo( cods, pbs )
 
-    print( 'h: ',  calcH( len(getAlfabetoCod(cods)), pbs) )
+    print( 'h: ',  calculateHr( len(getAlfabetoCodigo(cods)), pbs) )
     print( 'lmed: ', lmed)
 
 codigo7 = ["==", "<", "<=", ">", "=>", "<="]
@@ -46,5 +20,5 @@ main(codigo8, pbs)
 main(codigo9, pbs)
 main(codigo10, pbs)
 
-print( 'h: ',  calcH( 3, [0.5, 0.25, 0.125, 0.125]) )
-print( 'h: ',  calcH( 3, [0.333]*2+[0.167]*2) )
+print( 'h: ',  calculateHr( 3, [0.5, 0.25, 0.125, 0.125]) )
+print( 'h: ',  calculateHr( 3, [0.333]*2+[0.167]*2) )
