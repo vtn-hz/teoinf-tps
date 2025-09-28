@@ -5,9 +5,12 @@ def main(cods, pbs):
 
     lmed = getLengthMedCodigo( cods, pbs )
 
+    print( 'Codigo: ', cods )
+    print( ' I(r=', len(getAlfabetoCodigo(cods)) ,') ', [ round(calculateIr( pb, len(getAlfabetoCodigo(cods)) ), 2) for pb in pbs ] )
     print( 'h: ',  calculateHr( pbs, len(getAlfabetoCodigo(cods))) )
     print( 'lmed: ', lmed)
     print( 'Es compacto: ', isCompacto(cods, pbs) )
+    print( '--------------------------' )
 
 codigo7 = ["==", "<", "<=", ">", "=>", "<="]
 codigo8 = [")", "[]", "]]", "([", "([])", "([)]"]

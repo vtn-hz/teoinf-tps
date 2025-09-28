@@ -2,9 +2,11 @@ exec(open("./utils/codigos/kraft.py").read())
 
 def main(cods):
     # cods = ['AA', 'C', 'B', 'AB', 'ACB']
+    print( cods )
     print( getAlfabetoCodigo(cods) )
     print( getLengthsCodigo(cods) )
     print( kraft(cods) )
+    print( '---------' )
 
 codigo1 = ["011", "000", "010", "101", "111", "100"]
 codigo2 = ["110", "100", "101", "001", "110", "010"]
