@@ -1,0 +1,26 @@
+
+def getOcurrences( phrase: str ) -> dict:
+    occurrences = {}
+
+    for si in phrase:
+        if not (si in occurrences):
+            occurrences[si] = 0
+        occurrences[si] += 1
+    
+    return occurrences
+
+'''
+@return dictionary: { letra: porcentaje aparicion } 
+'''
+def buildS ( source: str ) -> dict:
+    occurrences = getOcurrences( source )
+    return { si:cant/len(source) for si, cant in occurrences.items() }
+
+def main():
+    data = input("data: ")
+    S = buildS(data) 
+
+    for si, pi in S.items():
+        print("si: ", si, " pi:", pi ) 
+
+main()
