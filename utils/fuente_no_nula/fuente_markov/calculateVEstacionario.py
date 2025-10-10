@@ -1,8 +1,8 @@
 def getErrorTolerancia() -> float:
     return 0.001
 
-def getVEstacionarioInit() -> tuple:
-    return (1/3, 1/3, 1/3) 
+def getVEstacionarioInit( n: int ) -> tuple:
+    return [1/n] * n 
 
 '''
 @param: M: matriz de transición (lista de listas)
@@ -35,7 +35,7 @@ def getMaxVEstacionarioDelta(V1: tuple, V2: tuple) -> float:
 @return: vector estacionario (tupla)
 '''
 def calculateVEstacionario(M: list[list]) -> tuple:
-    V = getVEstacionarioInit()
+    V = getVEstacionarioInit( len(M) )
 
     lastV = V
     V = getOperatedVEstacionario(M, V)
