@@ -12,6 +12,8 @@ def getSymbolOcurrences( phrase: str ) -> dict:
 
 
 # @return dictionary: { letra: porcentaje aparicion } 
-def buildS( source: str ) -> dict:
-    occurrences = getSymbolOcurrences( source )
-    return { si:cant/len(source) for si, cant in occurrences.items() }
+def buildS(source: str) -> dict:
+    occurrences = getSymbolOcurrences(source)
+    frequencies = {symbol: count / len(source) for symbol, count in occurrences.items()}
+    
+    return dict(sorted(frequencies.items(), key=lambda item: item[0]))
