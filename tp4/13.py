@@ -49,6 +49,5 @@ def main() -> None:
 
     printTable(P, C1, C2)
     printMetrics(C1, C2, P)
-    
 
 main()
