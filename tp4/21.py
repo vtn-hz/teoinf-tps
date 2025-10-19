@@ -1,29 +1,4 @@
-
-
-def hamming (C: list[str]) -> int:
-    
-    if len(C) <= 1:
-        raise Exception("No hay cantidad de codigos suficientes") 
-
-    _min = []
-    for _ in range(0, len(C)):
-        dif_amount = 0 
-
-        for i in range(0, len(C)):
-            for j in range(i+1, len(C)):
-                if i != j:
-                    for k in range(0, len(C[i])):
-                        dif_amount += int(C[i][k] != C[j][k]) 
-                    _min.append( dif_amount )
-
-    return min( _min )
-
-def erroresDetectables( C: list[str] ) -> int:
-    return hamming(C) - 1
-
-def erroresCorregibles( C: list[str] ) -> float:
-    return (hamming(C) - 1) // 2
-
+exec(open("./utils/errores/metricas.py").read())
 
 def main(): 
     C1 = ['00', '01', '10', '11']
@@ -46,6 +21,8 @@ def main():
     print( "hamming:" + str(hamming(C3)))
     print( "errores detectables:" + str(erroresDetectables( C3 )))
     print( "errores corregibles:" + str(erroresCorregibles( C3 )))
+    
+    print( "------------" )
 
     print( "hamming:" + str(hamming(C4)) )
     print( "errores detectables:" + str(erroresDetectables( C4 )) )
