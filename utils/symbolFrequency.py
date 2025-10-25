@@ -14,5 +14,5 @@ def getOcurrences( phrase: str ) -> dict:
 @return dictionary: { letra: porcentaje aparicion } 
 '''
 def buildS ( source: str ) -> dict:
-    occurrences = getOcurrences( source )
+    occurrences = dict( sorted(getOcurrences( source ).items()) )
     return { si:cant/len(source) for si, cant in occurrences.items() }
