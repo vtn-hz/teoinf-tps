@@ -13,3 +13,9 @@ def calculateHPosteriori( Pa :list, channel: list[list] ) -> list:
         result.append( calculateH( collectedPbs ) )
     
     return result
+
+
+
+def calculateHPosterioriTotal( Pa :list, channel: list[list] ) -> list:
+    return calculateH( getProbsOutSymbols(Pa, channel) )
+
