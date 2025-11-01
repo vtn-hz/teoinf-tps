@@ -1,4 +1,4 @@
-exec(open("./utils/fuente_no_nula/fuente_markov/fuenteMarkovSimulation.py").read())
+from utils.fuente_no_nula.fuente_markov.fuenteMarkovSimulation import simulateFuente
 
 def main():
     M = [ #A  #B  #C

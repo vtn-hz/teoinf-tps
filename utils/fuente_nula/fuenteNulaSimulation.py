@@ -1,4 +1,4 @@
-exec(open("./utils/montecarlo.py").read())
+from utils.montecarlo import getMontecarloIntervals, getRandomIndexByInterval
 
 def simulateSymbol( symbols: str, intervals: list[tuple] ) -> str:        
     return symbols[ getRandomIndexByInterval(intervals) ]

@@ -1,5 +1,5 @@
-exec(open("./utils/codigos/algorithm/shannonfano.py").read())
-exec(open("./utils/codigos/algorithm/huffman.py").read())
+from utils.codigos.algorithm.shannonfano import shannonfano
+from utils.codigos.algorithm.huffman import huffman
 
 def main():
     P1 = [ 0.2, 0.2, 0.3, 0.3 ]

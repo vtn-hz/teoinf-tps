@@ -1,5 +1,5 @@
-exec(open("./utils/montecarlo.py").read())
-exec(open("./utils/matrix.py").read())
+from utils.montecarlo import getMontecarloIntervals, getRandomIndexByInterval
+from utils.matrix import getMatrixTraspuesta
 
 '''
 Para iniciar, se elige el simbolo con mayor probabilidad de ocurrencia

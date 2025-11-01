@@ -1,4 +1,4 @@
-exec(open("./utils/codigos/metricas/rendRend.py").read())
+from utils.codigos.metricas.rendRend import rendimientoCodigo, redundanciaCodigo
 
 def main() -> None:
     S = [ "A", "B", "C", "D", "E" ]

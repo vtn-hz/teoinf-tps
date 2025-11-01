@@ -1,4 +1,4 @@
-exec(open("./utils/errores/multiparidad.py").read())
+from utils.errores.multiparidad import encodeMultiparidad, decodeMultiparidad
 
 def printMatrix(matrix: list):
     for row in matrix:

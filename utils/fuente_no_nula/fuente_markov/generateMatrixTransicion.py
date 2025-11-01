@@ -1,4 +1,4 @@
-exec(open("./utils/matrix.py").read())
+from utils.matrix import getMatrixZeros
 
 
 def generateMatrixTransicion(message: str) -> list[list]:

@@ -1,5 +1,5 @@
-exec(open("./utils/warshall.py").read())
-exec(open("./utils/matrix.py").read())
+from utils.warshall import warshall
+from utils.matrix import getMatrixTraspuesta
 
 def isErgodica( M: list[list[float]] ) -> bool:
     reacheable = warshall( getMatrixTraspuesta( M ) )

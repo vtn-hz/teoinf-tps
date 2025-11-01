@@ -1,13 +1,13 @@
-exec(open("./utils/fuente_nula/calculateH.py").read())
+from utils.fuente_nula.calculateH import calculateH
 
-exec(open("./utils/codigos/algorithm/shannonfano.py").read())
-exec(open("./utils/codigos/algorithm/huffman.py").read())
+from utils.codigos.algorithm.shannonfano import shannonfano
+from utils.codigos.algorithm.huffman import huffman
 
-exec(open("./utils/codigos/metricas/rendRend.py").read())
+from utils.codigos.metricas.rendRend import rendimientoCodigo, redundanciaCodigo
 
 
-exec(open("./utils/codigos/metricas/rendRend.py").read())
-exec(open("./utils/fuente_nula/alfabetoS.py").read())
+from utils.codigos.metricas.rendRend import rendimientoCodigo, redundanciaCodigo
+from utils.fuente_nula.alfabetoS import buildS, getSymbolOcurrences
 
 
 def printTable(P, C1, C2):

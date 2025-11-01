@@ -1,5 +1,5 @@
-exec(open("./utils/codigos/teoremaShannon.py").read())
-exec(open("./utils/codificacion/huffman_shannon/decode_encode.py").read())
+from utils.codigos.teoremaShannon import teoremaShannon, teoremaShannonExtending
+from utils.codificacion.huffman_shannon.decode_encode import codificar, decodificar, codificar_dict, decodificar_dict
 
 
 def main() -> None:

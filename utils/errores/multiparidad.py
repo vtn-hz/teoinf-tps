@@ -1,5 +1,3 @@
-exec(open("./utils/errores/multiparidad/decode.py").read())
-
-exec(open("./utils/errores/multiparidad/encode.py").read())
-
-exec(open("./utils/errores/multiparidad/errors.py").read())
+from utils.errores.multiparidad.decode import decodeMultiparidad
+from utils.errores.multiparidad.encode import encodeMultiparidad
+from utils.errores.multiparidad.errors import detectarErrorMultiparidad, trySolveErrorMultiparidad

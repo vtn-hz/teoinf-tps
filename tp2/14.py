@@ -1,5 +1,5 @@
-exec(open("./utils/fuente_no_nula/fuente_markov/calculateHFuenteMarkoviana.py").read())
-exec(open("./utils/fuente_no_nula/fuente_markov/calculateVEstacionario.py").read())
+from utils.fuente_no_nula.fuente_markov.calculateHFuenteMarkoviana import calculateHFuenteMarkoviana
+from utils.fuente_no_nula.fuente_markov.calculateVEstacionario import calculateVEstacionario
 
 def main():
     M = [

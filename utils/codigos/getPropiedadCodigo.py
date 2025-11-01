@@ -1,9 +1,8 @@
 import math
 
-exec(open("./utils/codigos/calculateIr.py").read())
-exec(open("./utils/codigos/metadataCodigo.py").read())
-
-exec(open("./utils/codigos/sardinasPatterson.py").read())
+from utils.codigos.calculateIr import calculateIr
+from utils.codigos.metadataCodigo import getAlfabetoCodigo
+from utils.codigos.sardinasPatterson import sardinasPatterson
 
 def hasRepeated(codes: list):
     return len(codes) != len( set(codes) )

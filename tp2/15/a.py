@@ -1,6 +1,6 @@
-exec(open("./utils/fuente_no_nula/fuente_markov/generateMatrixTransicion.py").read())
-exec(open("./utils/fuente_nula/alfabetoS.py").read())
-exec(open("./utils/fuente_no_nula/fuente_markov/alfabetoS2.py").read())
+from utils.fuente_no_nula.fuente_markov.generateMatrixTransicion import generateMatrixTransicion
+from utils.fuente_nula.alfabetoS import buildS, getSymbolOcurrences
+from utils.fuente_no_nula.fuente_markov.alfabetoS2 import buildS2
 
 
 def main():

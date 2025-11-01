@@ -1,4 +1,4 @@
-exec(open("./utils/fuente_nula/fuenteNulaSimulation.py").read())
+from utils.fuente_nula.fuenteNulaSimulation import simulateFuente, simulateSymbol
 
 
 def main():

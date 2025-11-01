@@ -1,5 +1,5 @@
 # Incluir el archivo multiparidad.py
-exec(open("./utils/errores/multiparidad.py").read())
+from utils.errores.multiparidad import encodeMultiparidad, decodeMultiparidad
 
 # Definir las matrices como listas de cadenas
 ejercicio_25_matrices_pdf = {

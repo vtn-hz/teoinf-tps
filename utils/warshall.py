@@ -1,4 +1,4 @@
-exec(open("./utils/matrix.py").read())
+from utils.matrix import getMatrixZeros
 
 def initWarshall( matrix: list[list] ) -> list[list[bool]]:
     n = len(matrix)

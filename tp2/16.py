@@ -1,10 +1,10 @@
-exec(open("./utils/fuente_no_nula/fuente_markov/generateMatrixTransicion.py").read())
-exec(open("./utils/fuente_no_nula/fuente_markov/fuenteNulaDetection.py").read())
-exec(open("./utils/fuente_no_nula/fuente_markov/calculateHFuenteMarkoviana.py").read())
-exec(open("./utils/fuente_no_nula/fuente_markov/calculateVEstacionario.py").read())
+from utils.fuente_no_nula.fuente_markov.generateMatrixTransicion import generateMatrixTransicion
+from utils.fuente_no_nula.fuente_markov.fuenteNulaDetection import isFuenteNula
+from utils.fuente_no_nula.fuente_markov.calculateHFuenteMarkoviana import calculateHFuenteMarkoviana
+from utils.fuente_no_nula.fuente_markov.calculateVEstacionario import calculateVEstacionario
 
-exec(open("./utils/fuente_nula/calculateH.py").read())
-exec(open("./utils/fuente_nula/alfabetoS.py").read())
+from utils.fuente_nula.calculateH import calculateH
+from utils.fuente_nula.alfabetoS import buildS, getSymbolOcurrences
 
 
 def getHBytipoFuente( message:str, M: list[list], isNula: bool):

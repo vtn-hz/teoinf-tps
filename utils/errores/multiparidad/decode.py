@@ -1,5 +1,5 @@
-exec(open("./utils/errores/multiparidad/errors.py").read())
-exec(open("./utils/matrix.py").read())
+from utils.errores.multiparidad.errors import detectarErrorMultiparidad, trySolveErrorMultiparidad
+from utils.matrix import getIntMatrixFromByteArray
 
 
 

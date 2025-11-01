@@ -1,4 +1,4 @@
-exec(open("./utils/codigos/sardinasPatterson.py").read())
+from utils.codigos.sardinasPatterson import sardinasPatterson
 
 def main():
     val = eval( input("S: ") )

@@ -1,4 +1,4 @@
-exec(open("./utils/fuente_no_nula/fuente_markov/fuenteNulaDetection.py").read())
+from utils.fuente_no_nula.fuente_markov.fuenteNulaDetection import isFuenteNula
 
 def main():
     M = [

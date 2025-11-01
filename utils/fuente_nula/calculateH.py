@@ -1,4 +1,4 @@
-exec(open("./utils/fuente_nula/calculateI.py").read())
+from utils.fuente_nula.calculateI import calculateI
 
 # entropía: H = Σ pi * I(pi)
 def calculateH(P: list) -> float:

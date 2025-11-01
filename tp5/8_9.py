@@ -1,5 +1,5 @@
-exec(open("utils/canales/priori/probs.py").read())
-exec(open("utils/canales/posteriori/probs.py").read())
+from utils.canales.priori.probs import getProbabilidadPriori, getPrioriMatrixFull
+from utils.canales.posteriori.probs import getProbsOutSymbols, getPosterioriMatrix, getMatrixSimultaneusEvent
 
 def showS( S: dict ):
     for symb, percent in S.items():

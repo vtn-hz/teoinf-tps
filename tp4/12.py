@@ -1,9 +1,9 @@
-exec(open("./utils/fuente_nula/calculateH.py").read())
-exec(open("./utils/codigos/algorithm/shannonfano.py").read())
-exec(open("./utils/codigos/algorithm/huffman.py").read())
+from utils.fuente_nula.calculateH import calculateH
+from utils.codigos.algorithm.shannonfano import shannonfano
+from utils.codigos.algorithm.huffman import huffman
 
-exec(open("./utils/codigos/metricas/rendRend.py").read())
-exec(open("./utils/codigos/metadataCodigo.py").read())
+from utils.codigos.metricas.rendRend import rendimientoCodigo, redundanciaCodigo
+from utils.codigos.metadataCodigo import getAlfabetoCodigo, getLengthsCodigo, getLengthMedCodigo
 
 
 def printTable(P, C1, C2):

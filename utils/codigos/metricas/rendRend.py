@@ -1,5 +1,5 @@
-exec(open("./utils/fuente_nula/calculateH.py").read())
-exec(open("./utils/codigos/metadataCodigo.py").read())
+from utils.fuente_nula.calculateH import calculateH
+from utils.codigos.metadataCodigo import getLengthMedCodigo
 
 def rendimientoCodigo( C: list, P: list):
     H = calculateH(P)

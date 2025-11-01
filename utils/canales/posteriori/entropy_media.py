@@ -1,7 +1,8 @@
 import math
 
-exec(open("./utils/canales/posteriori/entropy.py").read())
-exec(open("./utils/canales/posteriori/probs.py").read())
+from utils.canales.posteriori.entropy import calculateHPosteriori
+from utils.canales.posteriori.probs import getProbsOutSymbols, getMatrixSimultaneusEvent, getPosterioriMatrix
+from utils.matrix import getMatrixTraspuesta
 
 
 def calculateHPosterioriMediaAB( Pa :list, channel: list[list] ) -> float:

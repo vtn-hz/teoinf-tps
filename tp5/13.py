@@ -1,5 +1,5 @@
-exec(open("utils/canales/priori/entropy.py").read())
-exec(open("utils/canales/posteriori/entropy.py").read())
+from utils.canales.priori.entropy import calculateHPriori
+from utils.canales.posteriori.entropy import calculateHPosteriori, calculateHPosterioriTotal
 
 
 def main(Pinit: list[float], channel: list[list[float]]):

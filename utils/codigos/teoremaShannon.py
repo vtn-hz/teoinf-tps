@@ -1,9 +1,7 @@
-exec(open("./utils/codigos/calculateHr.py").read())
-exec(open("./utils/codigos/metadataCodigo.py").read())
-
-
-exec(open("./utils/fuente_nula/extensiones/extensionGenerator.py").read())
-exec(open("./utils/fuente_nula/extensiones/extensionP.py").read())
+from utils.codigos.calculateHr import calculateHr
+from utils.codigos.metadataCodigo import getAlfabetoCodigo, getLengthMedCodigo
+from utils.fuente_nula.extensiones.extensionGenerator import generateExtensionsFromLL
+from utils.fuente_nula.extensiones.extensionP import generateExtensionsP
 
 def teoremaShannon( C: list, P: list, n: int) -> bool:
     r = len( getAlfabetoCodigo(C) )

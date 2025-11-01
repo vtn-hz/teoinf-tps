@@ -1,4 +1,4 @@
-exec(open("utils/canales/priori/probs.py").read())
+from utils.canales.priori.probs import getProbabilidadPriori, getPrioriMatrixFull
 
 def showS( S: dict ):
     for symb, percent in S.items():

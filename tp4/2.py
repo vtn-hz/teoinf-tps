@@ -1,5 +1,5 @@
-exec(open("./utils/codigos/teoremaShannon.py").read())
-exec(open("./utils/fuente_nula/extensiones/extensionGenerator.py").read())
+from utils.codigos.teoremaShannon import teoremaShannon, teoremaShannonExtending
+from utils.fuente_nula.extensiones.extensionGenerator import generateExtensionsFromLL, generateExtensionsFromD
 
 def main() -> None:
     P = [0.3, 0.1 , 0.4, 0.2]

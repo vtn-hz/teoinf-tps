@@ -1,6 +1,6 @@
-exec(open("utils/canales/posteriori/probs.py").read())
-exec(open("utils/canales/priori/entropy.py").read())
-exec(open("utils/canales/posteriori/entropy.py").read())
+from utils.canales.posteriori.probs import getProbsOutSymbols, getPosterioriMatrix, getMatrixSimultaneusEvent
+from utils.canales.priori.entropy import calculateHPriori
+from utils.canales.posteriori.entropy import calculateHPosteriori, calculateHPosterioriTotal
 
 
 

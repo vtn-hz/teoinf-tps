@@ -1,4 +1,4 @@
-exec(open("./utils/fuente_nula/alfabetoS.py").read())
+from utils.fuente_nula.alfabetoS import buildS, getSymbolOcurrences
 
 def main():
     fuente = 'Lorem ipsum'

@@ -1,4 +1,4 @@
-exec(open("./utils/codigos/algorithm/rlc.py").read())
+from utils.codigos.algorithm.rlc import rlc
 
 
 def build_byteArray(C: list) -> bytearray:
