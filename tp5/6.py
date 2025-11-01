@@ -1,4 +1,4 @@
-exec(open("utils/canales/posteriori/probs.py").read())
+from utils.canales.posteriori.probs import getProbsOutSymbols, getPosterioriMatrix, getMatrixSimultaneusEvent
 
 def main():
     matrix = [

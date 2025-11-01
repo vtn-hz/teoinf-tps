@@ -1,4 +1,4 @@
-exec(open("./utils/errores/metricas.py").read())
+from utils.errores.metricas import erroresDetectables, erroresCorregibles
 
 def main(): 
     C1 = ['00', '01', '10', '11']

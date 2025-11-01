@@ -1,5 +1,5 @@
-exec(open("./utils/fuente_nula/calculateH.py").read())
-exec(open("./utils/fuente_nula/alfabetoS.py").read())
+from utils.fuente_nula.calculateH import calculateH
+from utils.fuente_nula.alfabetoS import buildS, getSymbolOcurrences
 
 def main():
     source = input("fuente: ")

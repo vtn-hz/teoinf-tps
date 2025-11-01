@@ -1,5 +1,5 @@
-exec(open("./utils/fuente_nula/extensiones/extensionGenerator.py").read())
-exec(open("./utils/codigos/teoremaShannon.py").read())
+from utils.fuente_nula.extensiones.extensionGenerator import generateExtensionsFromLL, generateExtensionsFromD
+from utils.codigos.teoremaShannon import teoremaShannon, teoremaShannonExtending
 
 def main():
     S = ['1', '0']

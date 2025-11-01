@@ -1,5 +1,5 @@
-exec(open("./utils/fuente_nula/extensiones/extensionGenerator.py").read())
-exec(open("./utils/fuente_nula/extensiones/calculateHn.py").read())
+from utils.fuente_nula.extensiones.extensionGenerator import generateExtensionsFromLL, generateExtensionsFromD
+from utils.fuente_nula.extensiones.calculateHn import calculateHn
 
 
 def main():

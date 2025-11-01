@@ -1,5 +1,5 @@
-exec(open("./utils/codigos/getPropiedadCodigo.py").read())
-exec(open("./utils/codigos/calculateHr.py").read())
+from utils.codigos.getPropiedadCodigo import getPropiedadCodigoStr, getFullPropiedadCodigoStr, isInstantaneous, isUniquelyDecodable, isBlock, isCompacto
+from utils.codigos.calculateHr import calculateHr
 
 def main(cods, pbs):
 

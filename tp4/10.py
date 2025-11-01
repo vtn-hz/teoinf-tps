@@ -1,6 +1,6 @@
-exec(open("./utils/fuente_nula/alfabetoS.py").read())
-exec(open("./utils/codigos/algorithm/shannonfano.py").read())
-exec(open("./utils/codigos/algorithm/huffman.py").read())
+from utils.fuente_nula.alfabetoS import buildS, getSymbolOcurrences
+from utils.codigos.algorithm.shannonfano import shannonfano
+from utils.codigos.algorithm.huffman import huffman
 
 
 # === Función para imprimir tabla ===

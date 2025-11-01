@@ -1,4 +1,4 @@
-exec(open("./utils/codigos/kraft.py").read())
+from utils.codigos.kraft import kraft
 
 def main(cods):
     # cods = ['AA', 'C', 'B', 'AB', 'ACB']

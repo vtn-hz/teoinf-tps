@@ -1,7 +1,7 @@
-exec(open("./utils/codigos/teoremaShannon.py").read())
-exec(open("./utils/codigos/metricas/rendRend.py").read())
+from utils.codigos.teoremaShannon import teoremaShannon, teoremaShannonExtending
+from utils.codigos.metricas.rendRend import rendimientoCodigo, redundanciaCodigo
 
-exec(open("utils/fuente_nula/extensiones/extensionP.py").read())
+from utils.fuente_nula.extensiones.extensionP import generateExtensionsP
 
 def main() -> None:
     S = [ "A", "B", "C" ]

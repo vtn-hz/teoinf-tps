@@ -1,4 +1,5 @@
-exec(open("./utils/fuente_nula/calculateH.py").read())
+from utils.fuente_nula.calculateH import calculateH
+from utils.fuente_nula.calculateI import calculateI
 
 def main():
     rawData = input("list: ")

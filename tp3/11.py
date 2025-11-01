@@ -1,5 +1,5 @@
-exec(open("./utils/codigos/calculateHr.py").read())
-exec(open("./utils/codigos/metadataCodigo.py").read())
+from utils.codigos.calculateHr import calculateHr
+from utils.codigos.metadataCodigo import getAlfabetoCodigo, getLengthsCodigo, getLengthMedCodigo
 
 def main(cods, pbs):
 

@@ -1,4 +1,4 @@
-exec(open("./utils/fuente_no_nula/fuente_markov/calculateHFuenteMarkoviana.py").read())
+from utils.fuente_no_nula.fuente_markov.calculateHFuenteMarkoviana import calculateHFuenteMarkoviana
 
 def main():
     # Matriz de transición

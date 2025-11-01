@@ -1,11 +1,11 @@
-exec(open("./utils/codigos/algorithm/shannonfano.py").read())
-exec(open("./utils/codigos/algorithm/huffman.py").read())
+from utils.codigos.algorithm.shannonfano import shannonfano
+from utils.codigos.algorithm.huffman import huffman
 
-exec(open("./utils/codigos/metricas/rendRend.py").read())
-exec(open("./utils/codificacion/metricas.py").read())
+from utils.codigos.metricas.rendRend import rendimientoCodigo, redundanciaCodigo
+from utils.codificacion.metricas import tasaCompresion
 
-exec(open("./utils/codificacion/huffman_shannon/decode_encode.py").read())
-exec(open("./utils/codificacion/memory_decode_encode.py").read())
+from utils.codificacion.huffman_shannon.decode_encode import codificar, decodificar, codificar_dict, decodificar_dict
+from utils.codificacion.memory_decode_encode import saveComprimido, recoverComprimido
 
 def printMetricas( message: str, C: list, P: list  , encoded:bytearray ):
     print(f"Tasa compresion: { tasaCompresion(message, encoded) } | Rendimiento: { rendimientoCodigo(C, P) } | Redundancia: { redundanciaCodigo(C, P) }")

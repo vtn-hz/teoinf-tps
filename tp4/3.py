@@ -1,4 +1,4 @@
-exec(open("./utils/codigos/teoremaShannon.py").read())
+from utils.codigos.teoremaShannon import teoremaShannon, teoremaShannonExtending
 
 def main() -> None:
     C1 = ["11", "010", "00"]

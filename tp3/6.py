@@ -1,4 +1,4 @@
-exec(open("./utils/codigos/getPropiedadCodigo.py").read())
+from utils.codigos.getPropiedadCodigo import getPropiedadCodigoStr, getFullPropiedadCodigoStr, isInstantaneous, isUniquelyDecodable, isBlock, isCompacto
 
 def main(val):
     print( getPropiedadCodigoStr(val) )

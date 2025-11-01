@@ -1,5 +1,5 @@
-exec(open("./utils/codificacion/rlc/decode_encode.py").read())
-exec(open("./utils/codificacion/metricas.py").read())
+from utils.codificacion.rlc.decode_encode import codificar, decodificar
+from utils.codificacion.metricas import tasaCompresion
 
 
 def main():
