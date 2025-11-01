@@ -1,5 +1,5 @@
-exec(open("./utils/fuente_nula/calculateI.py").read())
-exec(open("./utils/matrix.py").read())
+from utils.fuente_nula.calculateI import calculateI
+from utils.matrix import getMatrixTraspuesta
 
 '''
 @param: M: matriz de transición (lista de listas)

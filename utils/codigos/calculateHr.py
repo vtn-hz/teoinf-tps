@@ -1,4 +1,4 @@
-exec(open("./utils/codigos/calculateIr.py").read())
+from utils.codigos.calculateIr import calculateIr
 
 def calculateHr( pbs:list, r: int ) -> float:
     return sum([

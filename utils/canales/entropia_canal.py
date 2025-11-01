@@ -1,5 +1,6 @@
-exec(open("./utils/canales/posteriori/entropy.py").read())
-exec(open("./utils/canales/posteriori/probs.py").read())
+from utils.canales.posteriori.entropy import calculateHPosteriori
+from utils.canales.posteriori.probs import getMatrixSimultaneusEvent, getProbsOutSymbols
+from utils.fuente_nula.calculateI import calculateI
 
 
 def calculateHCanal( Pa :list, channel: list[list] ) -> float:

@@ -1,5 +1,5 @@
-exec(open("./utils/fuente_nula/calculateH.py").read())
-exec(open("./utils/canales/posteriori/probs.py").read())
+from utils.fuente_nula.calculateH import calculateH
+from utils.canales.posteriori.probs import getPosterioriMatrix, getProbsOutSymbols
 
 
 def calculateHPosteriori( Pa :list, channel: list[list] ) -> list:

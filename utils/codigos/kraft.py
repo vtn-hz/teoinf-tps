@@ -1,4 +1,4 @@
-exec(open("./utils/codigos/metadataCodigo.py").read())
+from utils.codigos.metadataCodigo import getAlfabetoCodigo, getLengthsCodigo
 
 def kraft( cods: list ):
     r = len( getAlfabetoCodigo(cods) )

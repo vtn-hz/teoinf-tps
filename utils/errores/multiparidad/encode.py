@@ -1,4 +1,4 @@
-exec(open("./utils/matrix.py").read())
+from utils.matrix import getBinMatrixFromStr
 
 def addHorizontalParity(matrix: list, par = True) -> list:
     for i in range(len(matrix)):

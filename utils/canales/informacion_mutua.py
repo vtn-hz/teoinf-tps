@@ -1,7 +1,10 @@
-exec(open("./utils/canales/posteriori/entropy_media.py").read())
-exec(open("./utils/canales/posteriori/probs.py").read())
+import math
 
-exec(open("./utils/canales/priori/entropy.py").read())
+from utils.canales.posteriori.entropy_media import calculateHPosterioriMediaAB
+from utils.canales.posteriori.probs import getProbsOutSymbols, getMatrixSimultaneusEvent, getPosterioriMatrix
+from utils.canales.priori.entropy import calculateHPriori
+from utils.fuente_nula.calculateH import calculateH
+from utils.matrix import getMatrixTraspuesta
 
 def informacionMutuaAB( Pa :list, channel: list[list] ) -> float:
     return calculateHPriori(Pa) -  calculateHPosterioriMediaAB(Pa, channel)
