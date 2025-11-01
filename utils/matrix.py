@@ -26,3 +26,7 @@ def getIntMatrixFromByteArray( byte_array: bytearray ) -> list:
             row.append( (byte >> (7 - i)) & 1 )
         matrix.append(row)
     return matrix
+
+def printMatrix(M: list[list]):
+    for row in M:
+        print([f"{val:.4f}" for val in row])

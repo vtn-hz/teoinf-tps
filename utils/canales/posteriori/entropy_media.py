@@ -1,3 +1,5 @@
+import math
+
 exec(open("./utils/canales/posteriori/entropy.py").read())
 exec(open("./utils/canales/posteriori/probs.py").read())
 
@@ -12,8 +14,21 @@ def calculateHPosterioriMediaAB( Pa :list, channel: list[list] ) -> float:
     
     return result
 
+def calculateHPosterioriMediaABSimple( Pa :list, channel: list[list] ) -> float:
+    simulaneusEvent = getMatrixSimultaneusEvent(Pa, channel)
+    antiChannel = getPosterioriMatrix(Pa, channel)
+
+
+    result = 0
+    for i in range( len(channel) ):
+        for j in range( len(channel[0]) ):
+            if antiChannel[i][j] > 0:
+                result += simulaneusEvent[i][j] * math.log2(1/antiChannel[i][j])
+    
+    return result
+
 def calculateRuido(Pa :list, channel: list[list] ) -> float:
-    return calculateHPosterioriMediaAB(Pa, channel)
+    return calculateHPosterioriMediaABSimple(Pa, channel)
 
 def calculateHPosterioriMediaBA( Pa :list, channel: list[list] ) -> float:
     antiChannel = getPosterioriMatrix(Pa, channel)
@@ -27,5 +42,16 @@ def calculateHPosterioriMediaBA( Pa :list, channel: list[list] ) -> float:
     
     return result
 
+def calculateHPosterioriMediaBASimple( Pa :list, channel: list[list] ) -> float:
+    simulaneusEvent = getMatrixSimultaneusEvent(Pa, channel)
+
+    result = 0
+    for i in range( len(channel) ):
+        for j in range( len(channel[0]) ):
+            if channel[i][j] > 0:
+                result += simulaneusEvent[i][j] * math.log2(1/channel[i][j])
+    
+    return result
+
 def calculatePerdida(Pa: list, channel: list[list]):
-    return calculateHPosterioriMediaBA(Pa, channel)
+    return calculateHPosterioriMediaBASimple(Pa, channel)

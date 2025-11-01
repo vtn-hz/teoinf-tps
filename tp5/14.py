@@ -17,6 +17,6 @@ def main():
     print( 'H(A/B): ', calculateRuido(P, MC) ) 
     print( 'H(B/A): ', calculatePerdida(P, MC) ) 
     print( 'H(A, B): ', calculateHCanal(P, MC) ) 
-    print( 'I(A, B): ', informacionMutuaAB(P, MC))
-    print( 'I(B, A): ', informacionMutuaBA(P, MC))
+    print( 'I(A, B): ', informacionMutuaABSimple(P, MC))
+    print( 'I(B, A): ', informacionMutuaBASimple(P, MC))
 main()

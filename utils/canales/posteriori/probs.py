@@ -22,11 +22,11 @@ def getPosterioriMatrix( Pinitial: list, channel: list[list]):
     
     return result
 
-def getMatrixSimultaneusEvent( Pinitial: list, channel: list[list]):
+def getMatrixSimultaneusEvent( P: list, channel: list[list], isByRow = True):
     result = getMatrixZeros( len(channel), len(channel[0]) )
 
     for i in range(len(channel)):
         for j in range(len(channel[0])):
-            result[i][j] = channel[i][j] * Pinitial[i]
+            result[i][j] = channel[i][j] * P[i if isByRow else j]
     
     return result
