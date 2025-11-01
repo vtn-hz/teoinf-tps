@@ -1,6 +1,7 @@
 from utils.canales.posteriori.entropy_media import calculateHPosterioriMediaAB, calculateHPosterioriMediaBA, calculateRuido, calculatePerdida
-exec(open('utils/canales/priori/entropy.py').read())
-exec(open('utils/canales/priori/probs.py').read())
+from utils.canales.priori.entropy import calculateHPriori
+from utils.canales.posteriori.entropy import calculateHPosterioriTotal
+from utils.canales.priori.probs import getProbabilidadPriori, getPrioriMatrixFull
 from utils.canales.entropia_canal import calculateHCanal
 from utils.canales.informacion_mutua import informacionMutuaAB, informacionMutuaBA, informacionMutuaABSimple, informacionMutuaBASimple
 

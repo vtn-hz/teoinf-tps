@@ -34,7 +34,7 @@ def informacionMutuaBASimple(Pa: list, channel: list[list]) -> float:
     antiChannel = getPosterioriMatrix(Pa, channel)  # P(A|B)
     outProbs = getProbsOutSymbols(Pa, channel)      # P(bj)
 
-    simulaneusEvent = getMatrixSimultaneusEvent(outProbs, antiChannel, isByRow=False)
+    simulaneusEvent = getMatrixSimultaneusEvent(Pa, channel)
 
     result = 0.0
     for i in range(len(simulaneusEvent)):
