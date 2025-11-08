@@ -10,6 +10,10 @@ def getMatrixTraspuesta(M: list[list]) -> list[list]:
 def getMatrixZeros(filas: int, columnas: int) -> list[list[int]]:
     return [[0 for _ in range(columnas)] for _ in range(filas)]
 
+def printMatrix(matrix: list[list]) -> None:
+    max_width = max(len(f"{elem:.2f}") for row in matrix for elem in row)
+    for row in matrix:
+        print(" ".join(f"{elem:>{max_width}.2f}" for elem in row))
 
 def getBinMatrixFromStr(message: str) -> list:
     binary_matrix = []
@@ -47,4 +51,16 @@ def getMatrixProduct(A: list[list], B: list[list]) -> list:
             
             result[i][k] = amount
     
+    return result
+
+
+def getDeterminanteRowDuplicated(matrix: list[list], col: int, row: int) -> float:
+    result = getMatrixZeros(len(matrix[0]), len(matrix[0]) - 1)
+    j = 0
+    for i in range(len(matrix[0])):
+        if i != row:
+            result[i][j] = 1
+            j += 1
+    
+    result[row][col] = 1
     return result

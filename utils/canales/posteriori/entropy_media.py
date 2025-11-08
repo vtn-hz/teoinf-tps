@@ -31,6 +31,9 @@ def calculateHPosterioriMediaABSimple( Pa :list, channel: list[list] ) -> float:
 def calculateRuido(Pa :list, channel: list[list] ) -> float:
     return calculateHPosterioriMediaABSimple(Pa, channel)
 
+def calculateEquivocacion(Pa :list, channel: list[list] ) -> float:
+    return calculateHPosterioriMediaABSimple(Pa, channel)
+
 def calculateHPosterioriMediaBA( Pa :list, channel: list[list] ) -> float:
     antiChannel = getPosterioriMatrix(Pa, channel)
     Pout = getProbsOutSymbols(Pa,channel)
