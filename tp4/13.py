@@ -4,7 +4,7 @@ from utils.codigos.algorithm.shannonfano import shannonfano
 from utils.codigos.algorithm.huffman import huffman
 
 from utils.codigos.metricas.rendRend import rendimientoCodigo, redundanciaCodigo
-
+from utils.codigos.metadataCodigo import getLengthMedCodigo
 
 from utils.codigos.metricas.rendRend import rendimientoCodigo, redundanciaCodigo
 from utils.fuente_nula.alfabetoS import buildS, getSymbolOcurrences
