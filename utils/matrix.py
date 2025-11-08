@@ -30,3 +30,21 @@ def getIntMatrixFromByteArray( byte_array: bytearray ) -> list:
 def printMatrix(M: list[list]):
     for row in M:
         print([f"{val:.4f}" for val in row])
+
+def getMatrixProduct(A: list[list], B: list[list]) -> list:
+
+    # A:{ixj}*B:{jxk} = C{ixk}
+    if (len(A[0]) != len(B)):
+        raise Exception("Las matrices no son compatibles para la multiplicacion matricial")
+
+    result = getMatrixZeros(len(A), len(B[0]))
+
+    for i in range(len(A)):
+        for k in range(len(B[0])):
+            amount = 0
+            for j in range(len(B)):
+                amount += A[i][j] * B[j][k]
+            
+            result[i][k] = amount
+    
+    return result
