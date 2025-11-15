@@ -13,3 +13,6 @@ def calculateHCanal( Pa :list, channel: list[list] ) -> float:
                 result += item*calculateI(item)
 
     return result
+
+def calculateHAfinCanal( Pa :list, channel: list[list] ) -> float:
+    return calculateHCanal(Pa, channel)

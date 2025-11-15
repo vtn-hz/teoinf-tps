@@ -31,10 +31,6 @@ def getIntMatrixFromByteArray( byte_array: bytearray ) -> list:
         matrix.append(row)
     return matrix
 
-def printMatrix(M: list[list]):
-    for row in M:
-        print([f"{val:.4f}" for val in row])
-
 def getMatrixProduct(A: list[list], B: list[list]) -> list:
 
     # A:{ixj}*B:{jxk} = C{ixk}
@@ -64,3 +60,44 @@ def getDeterminanteRowDuplicated(matrix: list[list], col: int, row: int) -> floa
     
     result[row][col] = 1
     return result
+
+    # ...existing code...
+
+def printMatrixVerbose(matrix: list[list], row_labels: list[str], col_labels: list[str]) -> None:
+    """
+    Imprime la matriz con etiquetas de filas y columnas.
+    - matrix: matriz numérica (list of lists)
+    - row_labels: etiquetas para cada fila (len == filas)
+    - col_labels: etiquetas para cada columna (len == columnas)
+    """
+    if not matrix:
+        print("(matriz vacía)")
+        return
+    filas = len(matrix)
+    columnas = len(matrix[0])
+
+    if len(row_labels) != filas:
+        raise ValueError("row_labels debe tener la misma cantidad de elementos que filas de la matriz.")
+    if len(col_labels) != columnas:
+        raise ValueError("col_labels debe tener la misma cantidad de elementos que columnas de la matriz.")
+
+    # Ancho para números
+    num_width = max(len(f"{elem:.2f}") for row in matrix for elem in row)
+    # Ancho para etiquetas de fila
+    row_label_width = max(len(lbl) for lbl in row_labels)
+    # Anchos por columna (el máximo entre etiqueta y número)
+    col_widths = []
+    for j in range(columnas):
+        max_val_width = max(len(f"{matrix[i][j]:.2f}") for i in range(filas))
+        col_widths.append(max(max_val_width, len(col_labels[j]), num_width))
+
+    # Encabezado
+    header = " " * (row_label_width) + "  " + " ".join(f"{col_labels[j]:>{col_widths[j]}}" for j in range(columnas))
+    print(header)
+    # Separador
+    print(" " * (row_label_width) + "  " + " ".join("-" * col_widths[j] for j in range(columnas)))
+
+    # Filas
+    for i in range(filas):
+        fila_str = f"{row_labels[i]:>{row_label_width}}  " + " ".join(f"{matrix[i][j]:>{col_widths[j]}.2f}" for j in range(columnas))
+        print(fila_str)
