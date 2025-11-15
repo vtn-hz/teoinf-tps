@@ -6,6 +6,9 @@
 UNIDAD 4: CÓDIGOS Y CODIFICACIÓN - TEORÍA DE LA INFORMACIÓN
 ================================================================================
 
+Archivo autocontenido sin dependencias externas.
+Ejecutar con: python unidad4.py
+
 RESUMEN TEÓRICO:
 
 1. ENTROPÍA DE UNA FUENTE:
