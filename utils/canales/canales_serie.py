@@ -43,14 +43,8 @@ def getCanalDeterminante(channel: list[list], col1: int, col2: int) -> list[list
 
 # no tiene limite al momento de reducir ? 
 '''
-que pasa si quiero reducir mas alla de una matriz cuadrada?
-entrarian por ejemplo 3 simbolos y sadrian 2, como esto puede ser
-rentable al momento de transmitir informacion?
-
-el receptor no sabe que simbolo se envio si hay mas simbolos de entrada que de salida
-entonces no tiene sentido reducir mas alla de una matriz cuadrada
-
-preguntar!
+No, lo unico que hago al reducir al canal, es simplificar la cantidad de salidas,
+sin embargo, el canal sigue siendo el mismo. 
 '''
 def getReducedChannel(channel: list[list], squareLimit = False) -> list[list]:
     isReductable = True

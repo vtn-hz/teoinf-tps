@@ -1,0 +1,63 @@
+from utils.canales.propiedades import *
+from utils.canales.informacion_mutua import *
+from utils.canales.posteriori.entropy_media import *
+
+from utils.matrix import printMatrix
+
+from utils.canales.metricas import calcularCapacidad
+    
+def main(matrix: list) -> None:
+    print("Contenido de la matriz recibida:")
+    printMatrix(matrix)
+
+    if (not isCanalNoRuido(matrix)):
+        print("- Tiene ruido")
+    else:
+        print("- No tiene ruido")
+
+    if (isCanalDeterminante(matrix)):
+        print("- Es determinante")
+    else:
+        print("- No es determinante")
+
+    if (isCanalUniforme(matrix)):
+        print("- Es uniforme")
+    else:
+        print("- No es uniforme")
+
+    print('C(A, B): (max I(A, B))=', calcularCapacidad( matrix ))    
+
+if __name__ == "__main__":
+    
+    # Definición de las matrices fuera del main
+    matriz_1 = [
+        [0.0, 1.0, 0.0],
+        [0.0, 0.0, 1.0],
+        [0.0, 1.0, 0.0],
+        [1.0, 0.0, 0.0]
+    ]
+
+    matriz_2 = [
+        [1.0, 0.0, 0.0, 0.0],
+        [0.0, 0.2, 0.0, 0.8],
+        [0.0, 0.0, 1.0, 0.0]
+    ]
+
+    matriz_3 = [
+        [0.3, 0.5, 0.2],
+        [0.2, 0.3, 0.5],
+        [0.5, 0.2, 0.3]
+    ]
+
+    matriz_4 = [
+        [0.0, 0.0, 1.0, 0.0],
+        [1.0, 0.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0, 0.0],
+        [0.0, 0.0, 0.0, 1.0]
+    ]
+    
+    # Llamadas individuales al main, inyectando cada matriz
+    main(matriz_1)
+    main(matriz_2)
+    main(matriz_3) 
+    main(matriz_4) 
