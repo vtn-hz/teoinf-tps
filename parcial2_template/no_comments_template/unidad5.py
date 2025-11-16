@@ -399,7 +399,10 @@ def main():
     print('\n' + '=' * 80)
     print('RESUMEN DEL CANAL')
     print('=' * 80)
-    print(f"\n Características del canal:\n   - Entrada: {len(S)} símbolos\n   - Salida: {len(C)} símbolos\n   - Muestras: {len(input_seq)} transmisiones\n   \n Entropías:\n   - H(A)   = {H_A:.4f} bits (entrada)\n   - H(B)   = {H_B:.4f} bits (salida)\n   - H(A|B) = {H_AB:.4f} bits (ruido)\n   - H(B|A) = {H_BA:.4f} bits (pérdida)\n   - H(A,B) = {H_conj:.4f} bits (conjunta)\n   \n Información mutua:\n   - I(A;B) = {I_AB:.4f} bits\n   - Eficiencia: {I_AB / H_A * 100:.2f}% de H(A)\n   \nv Todas las relaciones fundamentales verificadas\nv La teoría de canales se cumple correctamente\n")
+    if mode == '2':
+        print(f"\n Características del canal:\n   - Entrada: {len(S)} símbolos\n   - Salida: {len(C)} símbolos\n   \n Entropías:\n   - H(A)   = {H_A:.4f} bits (entrada)\n   - H(B)   = {H_B:.4f} bits (salida)\n   - H(A|B) = {H_AB:.4f} bits (ruido)\n   - H(B|A) = {H_BA:.4f} bits (pérdida)\n   - H(A,B) = {H_conj:.4f} bits (conjunta)\n   \n Información mutua:\n   - I(A;B) = {I_AB:.4f} bits\n   - Eficiencia: {I_AB / H_A * 100:.2f}% de H(A)\n   \nv Todas las relaciones fundamentales verificadas\nv La teoría de canales se cumple correctamente\n")
+    else:
+        print(f"\n Características del canal:\n   - Entrada: {len(S)} símbolos\n   - Salida: {len(C)} símbolos\n   - Muestras: {len(input_seq)} transmisiones\n   \n Entropías:\n   - H(A)   = {H_A:.4f} bits (entrada)\n   - H(B)   = {H_B:.4f} bits (salida)\n   - H(A|B) = {H_AB:.4f} bits (ruido)\n   - H(B|A) = {H_BA:.4f} bits (pérdida)\n   - H(A,B) = {H_conj:.4f} bits (conjunta)\n   \n Información mutua:\n   - I(A;B) = {I_AB:.4f} bits\n   - Eficiencia: {I_AB / H_A * 100:.2f}% de H(A)\n   \nv Todas las relaciones fundamentales verificadas\nv La teoría de canales se cumple correctamente\n")
     print('=' * 80)
     print('Demostración completada exitosamente')
     print('=' * 80)
