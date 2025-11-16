@@ -1,4 +1,4 @@
-from utils.canales.priori.probs import getProbabilidadPriori, getPrioriMatrixFull
+from utils.canales.priori.probs import *
 
 def showS( S: dict ):
     for symb, percent in S.items():
@@ -30,7 +30,7 @@ def main(message, output):
     priori = getProbabilidadPriori( message )
     showS( priori )
 
-    matrixcanal = getPrioriMatrixJust( message, output ) 
+    matrixcanal = getPrioriMatrixByInputOutput( message, output ) 
     showMatrixCanal( sorted(set(message)), sorted(set(output)), matrixcanal )
 
 main('1101011001101010010101010100011111', '1001111111100011101101010111110110')

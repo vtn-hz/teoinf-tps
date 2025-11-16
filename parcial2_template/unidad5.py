@@ -259,7 +259,7 @@ def getPrioriMatrixFull(fnt: List[str], cds: List[str], _input: str, _output: st
     return result
 
 
-def getPrioriMatrixJust(_input: str, _output: str) -> List[List[float]]:
+def getPrioriMatrixByInputOutput(_input: str, _output: str) -> List[List[float]]:
     """
     Construye matriz de canal inferiendo los alfabetos desde las secuencias.
     

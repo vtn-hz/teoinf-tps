@@ -1,4 +1,4 @@
-from utils.canales.priori.probs import getProbabilidadPriori, getPrioriMatrixFull
+from utils.canales.priori.probs import *
 from utils.canales.posteriori.probs import getProbsOutSymbols, getPosterioriMatrix, getMatrixSimultaneusEvent
 
 def showS( S: dict ):
@@ -35,7 +35,7 @@ def main(message, output):
     print('- before channel -')
     priori = getProbabilidadPriori( message )
     showS( priori )
-    matrixcanal = getPrioriMatrixJust( message, output ) 
+    matrixcanal = getPrioriMatrixByInputOutput( message, output ) 
     showMatrixCanal( sorted(set(message)), sorted(set(output)), matrixcanal )
 
     print('- after channel -')
