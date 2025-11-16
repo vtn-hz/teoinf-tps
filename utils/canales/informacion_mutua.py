@@ -1,6 +1,6 @@
 import math
 
-from utils.canales.posteriori.entropy_media import calculateHPosterioriMediaAB
+from utils.canales.entropy_media import calculateHPosterioriMediaAB
 from utils.canales.posteriori.probs import getProbsOutSymbols, getMatrixSimultaneusEvent, getPosterioriMatrix
 from utils.canales.priori.entropy import calculateHPriori
 from utils.fuente_nula.calculateH import calculateH

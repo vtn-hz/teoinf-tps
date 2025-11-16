@@ -1,4 +1,4 @@
-from utils.canales.posteriori.entropy_media import calculateRuido, calculatePerdida
+from utils.canales.entropy_media import calculateRuido, calculatePerdida
 from utils.canales.priori.entropy import calculateHPriori
 from utils.canales.posteriori.entropy import calculateHPosterioriTotal
 from utils.canales.entropia_canal import calculateHCanal

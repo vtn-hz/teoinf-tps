@@ -1,5 +1,5 @@
 from utils.canales.canales_serie import generarComposedChannel
-from utils.canales.posteriori.entropy_media import *
+from utils.canales.entropy_media import *
 from utils.canales.priori.probs import getProbabilidadPriori, getPrioriMatrixFull
 from utils.canales.posteriori.probs import getProbsOutSymbols
 from utils.canales.informacion_mutua import informacionMutuaABSimple
