@@ -185,43 +185,116 @@ def askMatrix() -> list[list[float]]:
             print(f'Entrada inválida ({e}). Reingrese la fila. Ej: "0.5 1/3 2/3"')
     return matrix
 
+def askPrioriProbabilities(num_symbols: int) -> list[float]:
+    print(f'\nIngrese las probabilidades a priori de los {num_symbols} simbolos de entrada.')
+    print('Puede ingresar fracciones (ej: 1/3) o decimales (ej: 0.333).')
+    print('Separe los valores con espacios. Las probabilidades deben sumar 1.')
+    while True:
+        line = input('> ').strip()
+        try:
+            tokens = line.split()
+            if len(tokens) != num_symbols:
+                print(f'Se esperaban {num_symbols} probabilidades. Reingrese.')
+                continue
+            probs = [float(Fraction(tok)) for tok in tokens]
+            total = sum(probs)
+            if abs(total - 1.0) > 0.0001:
+                print(f'Las probabilidades deben sumar 1. Suma actual: {total:.4f}. Reingrese.')
+                continue
+            if any(p < 0 for p in probs):
+                print('Las probabilidades no pueden ser negativas. Reingrese.')
+                continue
+            return probs
+        except Exception as e:
+            print(f'Entrada invalida ({e}). Reingrese. Ej: "0.25 0.25 0.5"')
+
 def main():
     print('=' * 80)
     print('UNIDAD 5: DEMOSTRACIÓN DE TEORÍA DE CANALES')
     print('=' * 80)
-    print('\n Ingrese secuencias de entrada y salida de un canal:')
-    print("   Ejemplo: entrada='AABBCC' salida='010011'")
-    print('\n   Ingrese la secuencia de ENTRADA:')
-    input_seq = input('   > ').upper()
-    if not input_seq:
-        print('  Entrada vacía. Usando secuencias por defecto.')
-        input_seq = 'AABBCCAABBCC'
-        output_seq = '010110010101'
+    print('\nSeleccione el modo de entrada:')
+    print('  1. Ingresar secuencias de entrada y salida del canal')
+    print('  2. Ingresar directamente probabilidades a priori y matriz de canal')
+    print('\nIngrese su opcion (1 o 2):')
+    mode = input('> ').strip()
+    
+    if mode == '2':
+        print('\n' + '=' * 80)
+        print('MODO: ENTRADA DIRECTA DE PROBABILIDADES Y MATRIZ')
+        print('=' * 80)
+        print('\nPaso 1: Definir alfabetos')
+        print('Ingrese los simbolos del alfabeto de entrada separados por espacios:')
+        print('Ejemplo: A B C')
+        S_input = input('> ').strip().split()
+        S = sorted(S_input)
+        print(f'\nAlfabeto de entrada A: {S}')
+        
+        print('\nIngrese los simbolos del alfabeto de salida separados por espacios:')
+        print('Ejemplo: 0 1')
+        C_input = input('> ').strip().split()
+        C = sorted(C_input)
+        print(f'Alfabeto de salida B: {C}')
+        
+        print('\nPaso 2: Ingresar matriz de canal P(B|A)')
+        print(f'La matriz debe tener {len(S)} filas (entrada) y {len(C)} columnas (salida).')
+        channel = askMatrix()
+        
+        if len(channel) != len(S) or (len(channel) > 0 and len(channel[0]) != len(C)):
+            raise ValueError(f'La matriz debe tener {len(S)} filas y {len(C)} columnas.')
+        
+        print('\nPaso 3: Ingresar probabilidades a priori P(A)')
+        priori_list = askPrioriProbabilities(len(S))
+        
+        print('\n' + '=' * 80)
+        print('1. DATOS INGRESADOS')
+        print('=' * 80)
+        print(f'\nAlfabeto de entrada A: {S}')
+        print(f'Alfabeto de salida B: {C}')
+        print('\n Matriz de canal P(B|A):')
+        printChannelInfo(S, C, channel)
+        print('\n' + '=' * 80)
+        print('2. PROBABILIDADES A PRIORI')
+        print('=' * 80)
+        priori_dict = {S[i]: priori_list[i] for i in range(len(S))}
+        print('\nDistribucion a priori P(A):')
+        showS(priori_dict)
     else:
-        print('   Ingrese la secuencia de SALIDA:')
-        output_seq = input('   > ')
-        if len(output_seq) != len(input_seq):
-            raise ValueError('La secuencia de salida debe tener la misma longitud que la de entrada.')
-    print(f'\n Secuencias recibidas:')
-    print(f"   Entrada:  '{input_seq}' (longitud: {len(input_seq)})")
-    print(f"   Salida:   '{output_seq}' (longitud: {len(output_seq)})")
-    print('\n' + '=' * 80)
-    print('1. CONSTRUCCIÓN DEL CANAL')
-    print('=' * 80)
-    S = sorted(set(input_seq))
-    C = sorted(set(output_seq))
-    print(f'\nAlfabeto de entrada A: {S}')
-    print(f'Alfabeto de salida B: {C}')
-    channel = getPrioriMatrixByInputOutput(input_seq, output_seq)
-    print('\n Matriz de canal P(B|A):')
-    printChannelInfo(S, C, channel)
-    print('\n' + '=' * 80)
-    print('2. PROBABILIDADES A PRIORI')
-    print('=' * 80)
-    priori_dict = getProbabilidadPriori(input_seq)
-    priori_list = [priori_dict[s] for s in S]
-    print('\nDistribución a priori P(A):')
-    showS(priori_dict)
+        print('\n' + '=' * 80)
+        print('MODO: SECUENCIAS DE ENTRADA Y SALIDA')
+        print('=' * 80)
+        print('\n Ingrese secuencias de entrada y salida de un canal:')
+        print("   Ejemplo: entrada='AABBCC' salida='010011'")
+        print('\n   Ingrese la secuencia de ENTRADA:')
+        input_seq = input('   > ').upper()
+        if not input_seq:
+            print('  Entrada vacia. Usando secuencias por defecto.')
+            input_seq = 'AABBCCAABBCC'
+            output_seq = '010110010101'
+        else:
+            print('   Ingrese la secuencia de SALIDA:')
+            output_seq = input('   > ')
+            if len(output_seq) != len(input_seq):
+                raise ValueError('La secuencia de salida debe tener la misma longitud que la de entrada.')
+        print(f'\n Secuencias recibidas:')
+        print(f"   Entrada:  '{input_seq}' (longitud: {len(input_seq)})")
+        print(f"   Salida:   '{output_seq}' (longitud: {len(output_seq)})")
+        print('\n' + '=' * 80)
+        print('1. CONSTRUCCIÓN DEL CANAL')
+        print('=' * 80)
+        S = sorted(set(input_seq))
+        C = sorted(set(output_seq))
+        print(f'\nAlfabeto de entrada A: {S}')
+        print(f'Alfabeto de salida B: {C}')
+        channel = getPrioriMatrixByInputOutput(input_seq, output_seq)
+        print('\n Matriz de canal P(B|A):')
+        printChannelInfo(S, C, channel)
+        print('\n' + '=' * 80)
+        print('2. PROBABILIDADES A PRIORI')
+        print('=' * 80)
+        priori_dict = getProbabilidadPriori(input_seq)
+        priori_list = [priori_dict[s] for s in S]
+        print('\nDistribucion a priori P(A):')
+        showS(priori_dict)
     print('\n' + '=' * 80)
     print('3. PROBABILIDADES DE SALIDA')
     print('=' * 80)
@@ -326,7 +399,10 @@ def main():
     print('\n' + '=' * 80)
     print('RESUMEN DEL CANAL')
     print('=' * 80)
-    print(f"\n Características del canal:\n   - Entrada: {len(S)} símbolos\n   - Salida: {len(C)} símbolos\n   - Muestras: {len(input_seq)} transmisiones\n   \n Entropías:\n   - H(A)   = {H_A:.4f} bits (entrada)\n   - H(B)   = {H_B:.4f} bits (salida)\n   - H(A|B) = {H_AB:.4f} bits (ruido)\n   - H(B|A) = {H_BA:.4f} bits (pérdida)\n   - H(A,B) = {H_conj:.4f} bits (conjunta)\n   \n Información mutua:\n   - I(A;B) = {I_AB:.4f} bits\n   - Eficiencia: {I_AB / H_A * 100:.2f}% de H(A)\n   \nv Todas las relaciones fundamentales verificadas\nv La teoría de canales se cumple correctamente\n")
+    if mode == '2':
+        print(f"\n Características del canal:\n   - Entrada: {len(S)} símbolos\n   - Salida: {len(C)} símbolos\n   \n Entropías:\n   - H(A)   = {H_A:.4f} bits (entrada)\n   - H(B)   = {H_B:.4f} bits (salida)\n   - H(A|B) = {H_AB:.4f} bits (ruido)\n   - H(B|A) = {H_BA:.4f} bits (pérdida)\n   - H(A,B) = {H_conj:.4f} bits (conjunta)\n   \n Información mutua:\n   - I(A;B) = {I_AB:.4f} bits\n   - Eficiencia: {I_AB / H_A * 100:.2f}% de H(A)\n   \nv Todas las relaciones fundamentales verificadas\nv La teoría de canales se cumple correctamente\n")
+    else:
+        print(f"\n Características del canal:\n   - Entrada: {len(S)} símbolos\n   - Salida: {len(C)} símbolos\n   - Muestras: {len(input_seq)} transmisiones\n   \n Entropías:\n   - H(A)   = {H_A:.4f} bits (entrada)\n   - H(B)   = {H_B:.4f} bits (salida)\n   - H(A|B) = {H_AB:.4f} bits (ruido)\n   - H(B|A) = {H_BA:.4f} bits (pérdida)\n   - H(A,B) = {H_conj:.4f} bits (conjunta)\n   \n Información mutua:\n   - I(A;B) = {I_AB:.4f} bits\n   - Eficiencia: {I_AB / H_A * 100:.2f}% de H(A)\n   \nv Todas las relaciones fundamentales verificadas\nv La teoría de canales se cumple correctamente\n")
     print('=' * 80)
     print('Demostración completada exitosamente')
     print('=' * 80)

@@ -1,4 +1,5 @@
 import math
+from fractions import Fraction
 from typing import List, Tuple, Dict, Optional
 
 def calculateI(pi: float) -> float:
@@ -255,6 +256,52 @@ def probabilidadError(channel: List[List[float]], P: List[float]) -> float:
         error += P[i] * (fila_sum - correcto)
     return error
 
+def askMatrix() -> List[List[float]]:
+    print('Ingrese la matriz de canal fila por fila, separando los valores con espacios.')
+    print('Puede ingresar fracciones (ej: 1/3).')
+    print("Ingrese una linea vacia para finalizar la entrada.")
+    matrix: List[List[float]] = []
+    expected_cols: Optional[int] = None
+    while True:
+        line = input('> ').strip()
+        if line == '':
+            break
+        try:
+            tokens = line.split()
+            row = [float(Fraction(tok)) for tok in tokens]
+            if expected_cols is None:
+                expected_cols = len(row)
+            elif len(row) != expected_cols:
+                print(f'La fila tiene {len(row)} columnas, se esperaban {expected_cols}. Reingrese la fila.')
+                continue
+            matrix.append(row)
+        except Exception as e:
+            print(f'Entrada invalida ({e}). Reingrese la fila. Ej: "0.5 1/3 2/3"')
+    return matrix
+
+def askPrioriProbabilities(num_symbols: int) -> List[float]:
+    print(f'\nIngrese las probabilidades a priori de los {num_symbols} simbolos de entrada.')
+    print('Puede ingresar fracciones (ej: 1/3) o decimales (ej: 0.333).')
+    print('Separe los valores con espacios. Las probabilidades deben sumar 1.')
+    while True:
+        line = input('> ').strip()
+        try:
+            tokens = line.split()
+            if len(tokens) != num_symbols:
+                print(f'Se esperaban {num_symbols} probabilidades. Reingrese.')
+                continue
+            probs = [float(Fraction(tok)) for tok in tokens]
+            total = sum(probs)
+            if abs(total - 1.0) > 0.0001:
+                print(f'Las probabilidades deben sumar 1. Suma actual: {total:.4f}. Reingrese.')
+                continue
+            if any(p < 0 for p in probs):
+                print('Las probabilidades no pueden ser negativas. Reingrese.')
+                continue
+            return probs
+        except Exception as e:
+            print(f'Entrada invalida ({e}). Reingrese. Ej: "0.25 0.25 0.5"')
+
 def main():
     print('=' * 80)
     print('UNIDAD 6: PROPIEDADES Y CAPACIDAD DE CANALES')
@@ -314,7 +361,7 @@ def main():
             print('    Optimización numérica no implementada para canales no binarios')
             capacidad = None
     print('\n' + '=' * 80)
-    print('4. INFORMACIÓN MUTUA CON DIFERENTES DISTRIBUCIONES')
+    print('4. INFORMACION MUTUA CON DIFERENTES DISTRIBUCIONES')
     print('=' * 80)
     P_uniforme = [1 / len(channel)] * len(channel)
     I_uniforme = informacionMutuaABSimple(P_uniforme, channel)
@@ -335,7 +382,7 @@ def main():
         print(f"   Capacidad C = {capacidad:.4f} bits")
         print(f"   C - I(uniforme) = {capacidad - I_uniforme:.4f} bits")
     print('\n' + '=' * 80)
-    print('5. RUIDO Y PÉRDIDA DEL CANAL')
+    print('5. RUIDO Y PERDIDA DEL CANAL')
     print('=' * 80)
     ruido = calculateRuido(P_uniforme, channel)
     perdida = calculatePerdida(P_uniforme, channel)
@@ -344,16 +391,16 @@ def main():
     print(f'   H(B|A) = {perdida:.4f} bits (pérdida)')
     print(f'\n Interpretación:')
     if ruido < 0.01:
-        print(f'   - Canal prácticamente sin ruido')
+        print(f'   - Canal practicamente sin ruido')
     else:
         print(f'   - Ruido: {ruido:.4f} bits de incertidumbre sobre entrada')
     if perdida < 0.01:
-        print(f'   - Canal prácticamente determinístico')
+        print(f'   - Canal practicamente deterministico')
     else:
-        print(f'   - Pérdida: {perdida:.4f} bits de incertidumbre sobre salida')
-    if len(channel) <= 3 and len(channel[0]) <= 3:
+        print(f'   - Perdida: {perdida:.4f} bits de incertidumbre sobre salida')
+    if analyze_composed or (len(channel) <= 3 and len(channel[0]) <= 3 and mode != '2'):
         print('\n' + '=' * 80)
-        print('6. COMPOSICIÓN DE CANALES EN SERIE')
+        print('6. COMPOSICION DE CANALES EN SERIE')
         print('=' * 80)
         channel2 = [[0.9, 0.1, 0.0], [0.0, 0.9, 0.1], [0.1, 0.0, 0.9]][:len(channel[0])]
         if len(channel[0]) == len(channel2):
@@ -372,14 +419,15 @@ def main():
             print(f'\n Verificación: I(A;C) ≤ min(I(A;B), I(B;C))')
             print(f'   {I_AC:.4f} ≤ {min(I_AB, I_BC):.4f}: {I_AC <= min(I_AB, I_BC)}')
     if len(channel) == len(channel[0]):
+        section_num = '8' if (analyze_composed or (len(channel) <= 3 and len(channel[0]) <= 3 and mode != '2')) else '7'
         print('\n' + '=' * 80)
-        print('7. PROBABILIDAD DE ERROR (REGLA ML)')
+        print(f'{section_num}. PROBABILIDAD DE ERROR (REGLA ML)')
         print('=' * 80)
         Pe = probabilidadError(channel, P_uniforme)
         print(f'\n Con distribución uniforme:')
         print(f'   Probabilidad de error ML: {Pe:.4f}')
         print(f'   Probabilidad de acierto: {1 - Pe:.4f}')
-        if len(channel) >= 2:
+        if len(channel) >= 2 and P_user is None:
             Pe_sesgada = probabilidadError(channel, P_sesgada)
             print(f'\n Con distribución sesgada:')
             print(f'   Probabilidad de error ML: {Pe_sesgada:.4f}')
@@ -391,7 +439,7 @@ def main():
     if capacidad is not None:
         print(f'   - Capacidad C = {capacidad:.4f} bits')
     print('\n' + '=' * 80)
-    print('Demostración completada exitosamente')
+    print('Demostracion completada exitosamente')
     print('=' * 80)
 if __name__ == '__main__':
     main()
