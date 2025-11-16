@@ -1,4 +1,5 @@
 import math
+from fractions import Fraction
 from typing import List, Tuple, Dict, Optional
 
 def calculateI(pi: float) -> float:
@@ -255,28 +256,125 @@ def probabilidadError(channel: List[List[float]], P: List[float]) -> float:
         error += P[i] * (fila_sum - correcto)
     return error
 
+def askMatrix() -> List[List[float]]:
+    print('Ingrese la matriz de canal fila por fila, separando los valores con espacios.')
+    print('Puede ingresar fracciones (ej: 1/3).')
+    print("Ingrese una linea vacia para finalizar la entrada.")
+    matrix: List[List[float]] = []
+    expected_cols: Optional[int] = None
+    while True:
+        line = input('> ').strip()
+        if line == '':
+            break
+        try:
+            tokens = line.split()
+            row = [float(Fraction(tok)) for tok in tokens]
+            if expected_cols is None:
+                expected_cols = len(row)
+            elif len(row) != expected_cols:
+                print(f'La fila tiene {len(row)} columnas, se esperaban {expected_cols}. Reingrese la fila.')
+                continue
+            matrix.append(row)
+        except Exception as e:
+            print(f'Entrada invalida ({e}). Reingrese la fila. Ej: "0.5 1/3 2/3"')
+    return matrix
+
+def askPrioriProbabilities(num_symbols: int) -> List[float]:
+    print(f'\nIngrese las probabilidades a priori de los {num_symbols} simbolos de entrada.')
+    print('Puede ingresar fracciones (ej: 1/3) o decimales (ej: 0.333).')
+    print('Separe los valores con espacios. Las probabilidades deben sumar 1.')
+    while True:
+        line = input('> ').strip()
+        try:
+            tokens = line.split()
+            if len(tokens) != num_symbols:
+                print(f'Se esperaban {num_symbols} probabilidades. Reingrese.')
+                continue
+            probs = [float(Fraction(tok)) for tok in tokens]
+            total = sum(probs)
+            if abs(total - 1.0) > 0.0001:
+                print(f'Las probabilidades deben sumar 1. Suma actual: {total:.4f}. Reingrese.')
+                continue
+            if any(p < 0 for p in probs):
+                print('Las probabilidades no pueden ser negativas. Reingrese.')
+                continue
+            return probs
+        except Exception as e:
+            print(f'Entrada invalida ({e}). Reingrese. Ej: "0.25 0.25 0.5"')
+
 def main():
     print('=' * 80)
     print('UNIDAD 6: PROPIEDADES Y CAPACIDAD DE CANALES')
     print('=' * 80)
-    canales = {'1': {'nombre': 'Canal Determinístico', 'matriz': [[0.0, 0.0, 1.0, 0.0], [1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 0.0, 1.0]], 'descripcion': 'Cada entrada produce una única salida'}, '2': {'nombre': 'Canal Sin Ruido', 'matriz': [[0.0, 1.0, 0.0], [0.0, 0.0, 1.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0]], 'descripcion': 'Cada salida proviene de una única entrada'}, '3': {'nombre': 'Canal Simétrico', 'matriz': [[0.3, 0.5, 0.2], [0.2, 0.3, 0.5], [0.5, 0.2, 0.3]], 'descripcion': 'Filas y columnas son permutaciones'}, '4': {'nombre': 'Canal Binario Simétrico (BSC)', 'matriz': [[0.9, 0.1], [0.1, 0.9]], 'descripcion': 'Canal binario con probabilidad de error 0.1'}, '5': {'nombre': 'Canal con Ruido y Pérdida', 'matriz': [[0.6, 0.3, 0.1], [0.1, 0.8, 0.1], [0.3, 0.3, 0.4]], 'descripcion': 'Canal general con ruido y pérdida'}}
-    print('\n📋 Canales disponibles:')
-    for key, info in canales.items():
-        print(f'   {key}. {info['nombre']}')
-        print(f'      {info['descripcion']}')
-    print('\n📝 Seleccione un canal para analizar (1-5):')
-    seleccion = input('   > ')
-    if seleccion not in canales:
-        print('⚠️  Selección inválida. Usando Canal Binario Simétrico.')
-        seleccion = '4'
-    canal_info = canales[seleccion]
-    channel = [row[:] for row in canal_info['matriz']]
-    print(f'\n✓ Canal seleccionado: {canal_info['nombre']}')
+    print('\nSeleccione el modo de entrada:')
+    print('  1. Seleccionar un canal predefinido')
+    print('  2. Ingresar directamente probabilidades a priori y matriz de canal')
+    print('\nIngrese su opcion (1 o 2):')
+    mode = input('> ').strip()
+    
+    if mode == '2':
+        print('\n' + '=' * 80)
+        print('MODO: ENTRADA DIRECTA DE PROBABILIDADES Y MATRIZ')
+        print('=' * 80)
+        print('\nPaso 1: Ingresar matriz de canal P(B|A)')
+        channel = askMatrix()
+        
+        if len(channel) == 0 or len(channel[0]) == 0:
+            raise ValueError('La matriz no puede estar vacia.')
+        
+        print('\nPaso 2: Ingresar probabilidades a priori P(A)')
+        P_user = askPrioriProbabilities(len(channel))
+        
+        print('\n¿Desea ingresar un segundo canal para composicion? (s/n):')
+        compose = input('> ').strip().lower()
+        
+        if compose == 's':
+            print('\nPaso 3: Ingresar segundo canal P(C|B)')
+            print(f'El segundo canal debe tener {len(channel[0])} filas (salida del primer canal).')
+            channel2 = askMatrix()
+            
+            if len(channel2) != len(channel[0]):
+                raise ValueError(f'El segundo canal debe tener {len(channel[0])} filas.')
+            
+            print('\nCanales ingresados:')
+            print('\nPrimer canal A->B:')
+            printMatrix(channel)
+            print('\nSegundo canal B->C:')
+            printMatrix(channel2)
+            
+            print('\nCalculando canal compuesto A->C...')
+            channel_comp = generarComposedChannel(channel, channel2)
+            print('\nCanal compuesto A->C:')
+            printMatrix(channel_comp)
+            
+            analyze_composed = True
+        else:
+            channel_comp = None
+            analyze_composed = False
+        
+        canal_info = {'nombre': 'Canal ingresado por usuario', 'matriz': channel, 'descripcion': 'Canal personalizado'}
+        print(f'\nCanal principal configurado correctamente')
+    else:
+        canales = {'1': {'nombre': 'Canal Deterministico', 'matriz': [[0.0, 0.0, 1.0, 0.0], [1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 0.0, 1.0]], 'descripcion': 'Cada entrada produce una unica salida'}, '2': {'nombre': 'Canal Sin Ruido', 'matriz': [[0.0, 1.0, 0.0], [0.0, 0.0, 1.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0]], 'descripcion': 'Cada salida proviene de una unica entrada'}, '3': {'nombre': 'Canal Simetrico', 'matriz': [[0.3, 0.5, 0.2], [0.2, 0.3, 0.5], [0.5, 0.2, 0.3]], 'descripcion': 'Filas y columnas son permutaciones'}, '4': {'nombre': 'Canal Binario Simetrico (BSC)', 'matriz': [[0.9, 0.1], [0.1, 0.9]], 'descripcion': 'Canal binario con probabilidad de error 0.1'}, '5': {'nombre': 'Canal con Ruido y Perdida', 'matriz': [[0.6, 0.3, 0.1], [0.1, 0.8, 0.1], [0.3, 0.3, 0.4]], 'descripcion': 'Canal general con ruido y perdida'}}
+        print('\n Canales disponibles:')
+        for key, info in canales.items():
+            print(f'   {key}. {info["nombre"]}')
+            print(f'      {info["descripcion"]}')
+        print('\n Seleccione un canal para analizar (1-5):')
+        seleccion = input('   > ')
+        if seleccion not in canales:
+            print('  Seleccion invalida. Usando Canal Binario Simetrico.')
+            seleccion = '4'
+        canal_info = canales[seleccion]
+        channel = [row[:] for row in canal_info['matriz']]
+        P_user = None
+        analyze_composed = False
+        print(f'\n Canal seleccionado: {canal_info["nombre"]}')
     print('\n' + '=' * 80)
     print('1. MATRIZ DEL CANAL')
     print('=' * 80)
-    print(f'\n{canal_info['descripcion']}')
-    print(f'\nMatriz P(B|A) [{len(channel)}×{len(channel[0])}]:')
+    print(f'\n{canal_info["descripcion"]}')
+    print(f'\nMatriz P(B|A) [{len(channel)}x{len(channel[0])}]:')
     printMatrix(channel)
     print('\n' + '=' * 80)
     print('2. PROPIEDADES DEL CANAL')
@@ -285,113 +383,172 @@ def main():
     es_determinante = isCanalDeterminante(channel)
     es_uniforme = isCanalUniforme(channel)
     es_simetrico = isCanalSimetrico(channel)
-    print(f'\n{'Propiedad':<25} {'Estado':<10}')
+    print(f'\n{"Propiedad":<25} {"Estado":<10}')
     print('-' * 35)
-    print(f'{'Sin ruido':<25} {('✓ SÍ' if es_noruido else '✗ NO'):<10}')
-    print(f'{'Determinístico':<25} {('✓ SÍ' if es_determinante else '✗ NO'):<10}')
-    print(f'{'Uniforme':<25} {('✓ SÍ' if es_uniforme else '✗ NO'):<10}')
-    print(f'{'Simétrico':<25} {('✓ SÍ' if es_simetrico else '✗ NO'):<10}')
+    print(f'{"Sin ruido":<25} {("SI" if es_noruido else "NO"):<10}')
+    print(f'{"Deterministico":<25} {("SI" if es_determinante else "NO"):<10}')
+    print(f'{"Uniforme":<25} {("SI" if es_uniforme else "NO"):<10}')
+    print(f'{"Simetrico":<25} {("SI" if es_simetrico else "NO"):<10}')
     print('\n' + '=' * 80)
     print('3. CAPACIDAD DEL CANAL')
     print('=' * 80)
     try:
         capacidad = calcularCapacidad(channel)
-        print(f'\n📊 Capacidad C = {capacidad:.4f} bits')
+        print(f'\n Capacidad C = {capacidad:.4f} bits')
         if es_noruido:
-            print(f'   Fórmula: C = log₂(|A|) = log₂({len(channel)}) = {capacidad:.4f}')
+            print(f'   Formula: C = log2(|A|) = log2({len(channel)}) = {capacidad:.4f}')
         elif es_determinante:
-            print(f'   Fórmula: C = log₂(|B|) = log₂({len(channel[0])}) = {capacidad:.4f}')
+            print(f'   Formula: C = log2(|B|) = log2({len(channel[0])}) = {capacidad:.4f}')
         elif es_uniforme:
-            print(f'   Fórmula: C = log₂(|B|) - H(fila)')
-            print(f'   C = log₂({len(channel[0])}) - H = {capacidad:.4f}')
+            print(f'   Formula: C = log2(|B|) - H(fila)')
+            print(f'   C = log2({len(channel[0])}) - H = {capacidad:.4f}')
     except NotImplementedError:
-        print('\n📊 Canal general: calculando capacidad numéricamente...')
+        print('\n Canal general: calculando capacidad numericamente...')
         if len(channel) == 2:
             p_opt, capacidad = calculateCapacidadBinario(channel)
             print(f'   Capacidad C = {capacidad:.4f} bits')
-            print(f'   Distribución óptima: P(a₁) = {p_opt:.4f}, P(a₂) = {1 - p_opt:.4f}')
+            print(f'   Distribucion optima: P(a1) = {p_opt:.4f}, P(a2) = {1 - p_opt:.4f}')
         else:
-            print('   ⚠️ Optimización numérica no implementada para canales no binarios')
+            print('   Optimizacion numerica no implementada para canales no binarios')
             capacidad = None
     print('\n' + '=' * 80)
-    print('4. INFORMACIÓN MUTUA CON DIFERENTES DISTRIBUCIONES')
+    print('4. INFORMACION MUTUA CON DIFERENTES DISTRIBUCIONES')
     print('=' * 80)
     P_uniforme = [1 / len(channel)] * len(channel)
     I_uniforme = informacionMutuaABSimple(P_uniforme, channel)
-    print(f'\n📊 Con distribución uniforme:')
+    print(f'\n Con distribucion uniforme:')
     print(f'   P(A) = {P_uniforme}')
     print(f'   I(A;B) = {I_uniforme:.4f} bits')
-    if len(channel) >= 2:
+    
+    if P_user is not None:
+        I_user = informacionMutuaABSimple(P_user, channel)
+        print(f'\n Con distribucion ingresada por usuario:')
+        print(f'   P(A) = {P_user}')
+        print(f'   I(A;B) = {I_user:.4f} bits')
+    
+    if len(channel) >= 2 and P_user is None:
         P_sesgada = [0.8] + [0.2 / (len(channel) - 1)] * (len(channel) - 1)
         I_sesgada = informacionMutuaABSimple(P_sesgada, channel)
-        print(f'\n📊 Con distribución sesgada:')
+        print(f'\n Con distribucion sesgada:')
         print(f'   P(A) = {[round(p, 3) for p in P_sesgada]}')
         print(f'   I(A;B) = {I_sesgada:.4f} bits')
+    
     if capacidad is not None:
-        print(f'\n💡 Comparación:')
+        print(f'\n Comparacion:')
         print(f'   I(uniforme) = {I_uniforme:.4f} bits')
-        if len(channel) >= 2:
+        if P_user is not None:
+            print(f'   I(usuario) = {I_user:.4f} bits')
+        elif len(channel) >= 2:
             print(f'   I(sesgada) = {I_sesgada:.4f} bits')
         print(f'   Capacidad C = {capacidad:.4f} bits')
         print(f'   C - I(uniforme) = {capacidad - I_uniforme:.4f} bits')
     print('\n' + '=' * 80)
-    print('5. RUIDO Y PÉRDIDA DEL CANAL')
+    print('5. RUIDO Y PERDIDA DEL CANAL')
     print('=' * 80)
-    ruido = calculateRuido(P_uniforme, channel)
-    perdida = calculatePerdida(P_uniforme, channel)
-    print(f'\n📊 Con distribución uniforme:')
-    print(f'   H(A|B) = {ruido:.4f} bits (equivocación/ruido)')
-    print(f'   H(B|A) = {perdida:.4f} bits (pérdida)')
-    print(f'\n💡 Interpretación:')
+    P_calc = P_user if P_user is not None else P_uniforme
+    ruido = calculateRuido(P_calc, channel)
+    perdida = calculatePerdida(P_calc, channel)
+    H_A = calculateH(P_calc)
+    print(f'\n Con distribucion {"ingresada" if P_user is not None else "uniforme"}:')
+    print(f'   H(A) = {H_A:.4f} bits (entropia de entrada)')
+    print(f'   H(A|B) = {ruido:.4f} bits (equivocacion/ruido)')
+    print(f'   H(B|A) = {perdida:.4f} bits (perdida)')
+    print(f'\n Interpretacion:')
     if ruido < 0.01:
-        print(f'   - Canal prácticamente sin ruido')
+        print(f'   - Canal practicamente sin ruido')
     else:
         print(f'   - Ruido: {ruido:.4f} bits de incertidumbre sobre entrada')
     if perdida < 0.01:
-        print(f'   - Canal prácticamente determinístico')
+        print(f'   - Canal practicamente deterministico')
     else:
-        print(f'   - Pérdida: {perdida:.4f} bits de incertidumbre sobre salida')
-    if len(channel) <= 3 and len(channel[0]) <= 3:
+        print(f'   - Perdida: {perdida:.4f} bits de incertidumbre sobre salida')
+    if analyze_composed or (len(channel) <= 3 and len(channel[0]) <= 3 and mode != '2'):
         print('\n' + '=' * 80)
-        print('6. COMPOSICIÓN DE CANALES EN SERIE')
+        print('6. COMPOSICION DE CANALES EN SERIE')
         print('=' * 80)
-        channel2 = [[0.9, 0.1, 0.0], [0.0, 0.9, 0.1], [0.1, 0.0, 0.9]][:len(channel[0])]
-        if len(channel[0]) == len(channel2):
-            print('\nSegundo canal B→C:')
-            printMatrix(channel2)
-            channel_comp = generarComposedChannel(channel, channel2)
-            print('\nCanal compuesto A→C = A→B × B→C:')
-            printMatrix(channel_comp)
-            I_AB = informacionMutuaABSimple(P_uniforme[:len(channel)], channel)
-            I_BC = informacionMutuaABSimple(P_uniforme[:len(channel2)], channel2)
-            I_AC = informacionMutuaABSimple(P_uniforme[:len(channel)], channel_comp)
-            print(f'\n📊 Información mutua:')
+        
+        if not analyze_composed:
+            channel2 = [[0.9, 0.1, 0.0], [0.0, 0.9, 0.1], [0.1, 0.0, 0.9]][:len(channel[0])]
+            if len(channel[0]) == len(channel2):
+                print('\nSegundo canal B->C:')
+                printMatrix(channel2)
+                channel_comp = generarComposedChannel(channel, channel2)
+                print('\nCanal compuesto A->C = A->B x B->C:')
+                printMatrix(channel_comp)
+        
+        if channel_comp is not None:
+            P_comp = P_user if P_user is not None else P_uniforme[:len(channel)]
+            P_B = P_uniforme[:len(channel2)] if not analyze_composed else P_uniforme[:len(channel[0])]
+            
+            I_AB = informacionMutuaABSimple(P_comp, channel)
+            I_BC = informacionMutuaABSimple(P_B, channel2)
+            I_AC = informacionMutuaABSimple(P_comp, channel_comp)
+            
+            print(f'\n Informacion mutua:')
             print(f'   I(A;B) = {I_AB:.4f} bits')
             print(f'   I(B;C) = {I_BC:.4f} bits')
             print(f'   I(A;C) = {I_AC:.4f} bits')
-            print(f'\n✓ Verificación: I(A;C) ≤ min(I(A;B), I(B;C))')
-            print(f'   {I_AC:.4f} ≤ {min(I_AB, I_BC):.4f}: {I_AC <= min(I_AB, I_BC)}')
+            print(f'\n Verificacion: I(A;C) <= min(I(A;B), I(B;C))')
+            print(f'   {I_AC:.4f} <= {min(I_AB, I_BC):.4f}: {I_AC <= min(I_AB, I_BC)}')
+            
+            print('\n' + '=' * 80)
+            print('7. ANALISIS DEL CANAL COMPUESTO')
+            print('=' * 80)
+            
+            es_noruido_comp = isCanalNoRuido(channel_comp)
+            es_determinante_comp = isCanalDeterminante(channel_comp)
+            es_uniforme_comp = isCanalUniforme(channel_comp)
+            es_simetrico_comp = isCanalSimetrico(channel_comp)
+            
+            print(f'\n{"Propiedad":<25} {"Estado":<10}')
+            print('-' * 35)
+            print(f'{"Sin ruido":<25} {("SI" if es_noruido_comp else "NO"):<10}')
+            print(f'{"Deterministico":<25} {("SI" if es_determinante_comp else "NO"):<10}')
+            print(f'{"Uniforme":<25} {("SI" if es_uniforme_comp else "NO"):<10}')
+            print(f'{"Simetrico":<25} {("SI" if es_simetrico_comp else "NO"):<10}')
+            
+            ruido_comp = calculateRuido(P_comp, channel_comp)
+            perdida_comp = calculatePerdida(P_comp, channel_comp)
+            H_A_comp = calculateH(P_comp)
+            
+            print(f'\n Entropias del canal compuesto:')
+            print(f'   H(A) = {H_A_comp:.4f} bits')
+            print(f'   H(A|C) = {ruido_comp:.4f} bits (ruido)')
+            print(f'   H(C|A) = {perdida_comp:.4f} bits (perdida)')
+            print(f'   I(A;C) = {I_AC:.4f} bits')
+            
+            try:
+                capacidad_comp = calcularCapacidad(channel_comp)
+                print(f'\n Capacidad del canal compuesto:')
+                print(f'   C(A->C) = {capacidad_comp:.4f} bits')
+            except NotImplementedError:
+                if len(channel_comp) == 2:
+                    p_opt_comp, capacidad_comp = calculateCapacidadBinario(channel_comp)
+                    print(f'\n Capacidad del canal compuesto:')
+                    print(f'   C(A->C) = {capacidad_comp:.4f} bits')
+                    print(f'   Distribucion optima: P(a1) = {p_opt_comp:.4f}')
     if len(channel) == len(channel[0]):
+        section_num = '8' if (analyze_composed or (len(channel) <= 3 and len(channel[0]) <= 3 and mode != '2')) else '7'
         print('\n' + '=' * 80)
-        print('7. PROBABILIDAD DE ERROR (REGLA ML)')
+        print(f'{section_num}. PROBABILIDAD DE ERROR (REGLA ML)')
         print('=' * 80)
-        Pe = probabilidadError(channel, P_uniforme)
-        print(f'\n📊 Con distribución uniforme:')
+        Pe = probabilidadError(channel, P_calc)
+        print(f'\n Con distribucion {"ingresada" if P_user is not None else "uniforme"}:')
         print(f'   Probabilidad de error ML: {Pe:.4f}')
         print(f'   Probabilidad de acierto: {1 - Pe:.4f}')
-        if len(channel) >= 2:
+        if len(channel) >= 2 and P_user is None:
             Pe_sesgada = probabilidadError(channel, P_sesgada)
-            print(f'\n📊 Con distribución sesgada:')
+            print(f'\n Con distribucion sesgada:')
             print(f'   Probabilidad de error ML: {Pe_sesgada:.4f}')
             print(f'   Diferencia con uniforme: {abs(Pe - Pe_sesgada):.4f}')
     print('\n' + '=' * 80)
     print('RESUMEN DEL CANAL')
     print('=' * 80)
-    print(f'\n📊 Canal: {canal_info['nombre']}\n   - Dimensión: {len(channel)}×{len(channel[0])}\n   \n🔍 Propiedades:\n   - Sin ruido: {('Sí' if es_noruido else 'No')}\n   - Determinístico: {('Sí' if es_determinante else 'No')}\n   - Uniforme: {('Sí' if es_uniforme else 'No')}\n   - Simétrico: {('Sí' if es_simetrico else 'No')}\n   \n💬 Métricas (distribución uniforme):\n   - I(A;B) = {I_uniforme:.4f} bits\n   - H(A|B) = {ruido:.4f} bits (ruido)\n   - H(B|A) = {perdida:.4f} bits (pérdida)\n')
+    print(f'\n Canal: {canal_info["nombre"]}\n   - Dimension: {len(channel)}x{len(channel[0])}\n   \n Propiedades:\n   - Sin ruido: {("Si" if es_noruido else "No")}\n   - Deterministico: {("Si" if es_determinante else "No")}\n   - Uniforme: {("Si" if es_uniforme else "No")}\n   - Simetrico: {("Si" if es_simetrico else "No")}\n   \n Metricas (distribucion {"ingresada" if P_user is not None else "uniforme"}):\n   - H(A) = {H_A:.4f} bits\n   - I(A;B) = {I_user if P_user is not None else I_uniforme:.4f} bits\n   - H(A|B) = {ruido:.4f} bits (ruido)\n   - H(B|A) = {perdida:.4f} bits (perdida)\n')
     if capacidad is not None:
         print(f'   - Capacidad C = {capacidad:.4f} bits')
     print('\n' + '=' * 80)
-    print('Demostración completada exitosamente')
+    print('Demostracion completada exitosamente')
     print('=' * 80)
 if __name__ == '__main__':
     main()
