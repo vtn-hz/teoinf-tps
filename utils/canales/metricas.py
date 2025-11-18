@@ -28,6 +28,8 @@ def calcularCapacidad( channel: list[list] ) -> float:
     if isCanalUniforme( channel ):
         return calculateCapacidadUniforme( channel )
     
+    if isCanalBinario( channel ):
+        return calculateCapacidadBinario( channel )[1]
 
     raise NotImplementedError("No se puede calcular la capacidad con el 'channel' dado")
 

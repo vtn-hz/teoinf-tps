@@ -91,3 +91,6 @@ def isCanalUniforme(channel : list[list]) -> bool:
             return False
     
     return True
+
+def isCanalBinario(channel : list[list]) -> bool:
+    return len(channel) == 2 and len(channel[0]) == 2

@@ -188,6 +188,9 @@ def calcularCapacidad(channel: List[List[float]]) -> float:
         return calculateCapacidadDeterminante(channel)
     if isCanalUniforme(channel):
         return calculateCapacidadUniforme(channel)
+    if len(channel) == 2:
+        p_opt, C = calculateCapacidadBinario(channel)
+        return C
     raise NotImplementedError('Canal general: use optimización numérica')
 
 def calculateCapacidadBinario(channel: List[List[float]], step: float=0.0001) -> Tuple[float, float]:
