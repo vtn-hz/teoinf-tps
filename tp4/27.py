@@ -1,4 +1,7 @@
-from utils.errores.multiparidad import encodeMultiparidad, decodeMultiparidad
+from utils.errores.multiparidad.encode import *
+from utils.errores.multiparidad.decode import *
+from utils.errores.multiparidad.errors import *
+
 
 def printMatrix(matrix: list):
     for row in matrix:
