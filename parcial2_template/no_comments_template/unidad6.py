@@ -1,23 +1,22 @@
 import math
 import os
 from fractions import Fraction
-from typing import List, Tuple, Dict, Optional
 
-def getSymbolOcurrences(phrase: str) -> Dict[str, int]:
+def getSymbolOcurrences(phrase: str) -> dict[str, int]:
     occurrences = {}
     for si in phrase:
         occurrences[si] = occurrences.get(si, 0) + 1
     return occurrences
 
-def buildS(source: str) -> Dict[str, float]:
+def buildS(source: str) -> dict[str, float]:
     occurrences = getSymbolOcurrences(source)
     frequencies = {symbol: count / len(source) for symbol, count in occurrences.items()}
     return dict(sorted(frequencies.items(), key=lambda item: item[0]))
 
-def getProbabilidadPriori(message: str) -> Dict[str, float]:
+def getProbabilidadPriori(message: str) -> dict[str, float]:
     return buildS(message)
 
-def getPrioriMatrixFull(fnt: List[str], cds: List[str], _input: str, _output: str) -> List[List[float]]:
+def getPrioriMatrixFull(fnt: list[str], cds: list[str], _input: str, _output: str) -> list[list[float]]:
     result = getMatrixZeros(len(fnt), len(cds))
     for i in range(min(len(_input), len(_output))):
         row = fnt.index(_input[i])
@@ -30,7 +29,7 @@ def getPrioriMatrixFull(fnt: List[str], cds: List[str], _input: str, _output: st
                 row[j] /= s
     return result
 
-def getPrioriMatrixByInputOutput(_input: str, _output: str) -> List[List[float]]:
+def getPrioriMatrixByInputOutput(_input: str, _output: str) -> list[list[float]]:
     inalf = sorted(set(_input))
     outalf = sorted(set(_output))
     return getPrioriMatrixFull(inalf, outalf, _input, _output)
@@ -40,13 +39,13 @@ def calculateI(pi: float) -> float:
         return 0
     return math.log2(1 / pi)
 
-def calculateH(P: List[float]) -> float:
+def calculateH(P: list[float]) -> float:
     return sum((pi * calculateI(pi) for pi in P if pi > 0))
 
-def getMatrixZeros(filas: int, columnas: int) -> List[List[float]]:
+def getMatrixZeros(filas: int, columnas: int) -> list[list[float]]:
     return [[0.0 for _ in range(columnas)] for _ in range(filas)]
 
-def getMatrixProduct(A: List[List[float]], B: List[List[float]]) -> List[List[float]]:
+def getMatrixProduct(A: list[list[float]], B: list[list[float]]) -> list[list[float]]:
     if len(A[0]) != len(B):
         raise Exception('Las matrices no son compatibles para multiplicación')
     result = getMatrixZeros(len(A), len(B[0]))
@@ -58,19 +57,19 @@ def getMatrixProduct(A: List[List[float]], B: List[List[float]]) -> List[List[fl
             result[i][k] = amount
     return result
 
-def printMatrix(matrix: List[List[float]]) -> None:
+def printMatrix(matrix: list[list[float]]) -> None:
     max_width = max((len(f'{elem:.4f}') for row in matrix for elem in row))
     for row in matrix:
         print(' '.join((f'{elem:>{max_width}.4f}' for elem in row)))
 
-def getProbsOutSymbols(Pinitial: List[float], channel: List[List[float]]) -> List[float]:
+def getProbsOutSymbols(Pinitial: list[float], channel: list[list[float]]) -> list[float]:
     result = [0.0] * len(channel[0])
     for j in range(len(channel[0])):
         for i in range(len(channel)):
             result[j] += channel[i][j] * Pinitial[i]
     return result
 
-def getPosterioriMatrix(Pinitial: List[float], channel: List[List[float]]) -> List[List[float]]:
+def getPosterioriMatrix(Pinitial: list[float], channel: list[list[float]]) -> list[list[float]]:
     result = getMatrixZeros(len(channel), len(channel[0]))
     outsSymbProbs = getProbsOutSymbols(Pinitial, channel)
     for i in range(len(channel)):
@@ -79,7 +78,7 @@ def getPosterioriMatrix(Pinitial: List[float], channel: List[List[float]]) -> Li
                 result[i][j] = channel[i][j] * Pinitial[i] / outsSymbProbs[j]
     return result
 
-def getMatrixSimultaneusEvent(Pinitial: List[float], channel: List[List[float]]) -> List[List[float]]:
+def getMatrixSimultaneusEvent(Pinitial: list[float], channel: list[list[float]]) -> list[list[float]]:
     rows = len(channel)
     cols = len(channel[0])
     result = getMatrixZeros(rows, cols)
@@ -88,7 +87,7 @@ def getMatrixSimultaneusEvent(Pinitial: List[float], channel: List[List[float]])
             result[i][j] = Pinitial[i] * channel[i][j]
     return result
 
-def informacionMutuaABSimple(Pa: List[float], channel: List[List[float]]) -> float:
+def informacionMutuaABSimple(Pa: list[float], channel: list[list[float]]) -> float:
     simulaneusEvent = getMatrixSimultaneusEvent(Pa, channel)
     outProbs = getProbsOutSymbols(Pa, channel)
     result = 0.0
@@ -98,7 +97,7 @@ def informacionMutuaABSimple(Pa: List[float], channel: List[List[float]]) -> flo
                 result += simulaneusEvent[i][j] * math.log2(simulaneusEvent[i][j] / (Pa[i] * outProbs[j]))
     return result
 
-def calculateRuido(Pa: List[float], channel: List[List[float]]) -> float:
+def calculateRuido(Pa: list[float], channel: list[list[float]]) -> float:
     simulaneusEvent = getMatrixSimultaneusEvent(Pa, channel)
     antiChannel = getPosterioriMatrix(Pa, channel)
     result = 0.0
@@ -108,7 +107,7 @@ def calculateRuido(Pa: List[float], channel: List[List[float]]) -> float:
                 result += simulaneusEvent[i][j] * math.log2(1 / antiChannel[i][j])
     return result
 
-def calculatePerdida(Pa: List[float], channel: List[List[float]]) -> float:
+def calculatePerdida(Pa: list[float], channel: list[list[float]]) -> float:
     simulaneusEvent = getMatrixSimultaneusEvent(Pa, channel)
     result = 0.0
     for i in range(len(channel)):
@@ -117,7 +116,7 @@ def calculatePerdida(Pa: List[float], channel: List[List[float]]) -> float:
                 result += simulaneusEvent[i][j] * math.log2(1 / channel[i][j])
     return result
 
-def isCanalNoRuido(channel: List[List[float]]) -> bool:
+def isCanalNoRuido(channel: list[list[float]]) -> bool:
     for j in range(len(channel[0])):
         amount = 0
         for i in range(len(channel)):
@@ -127,7 +126,7 @@ def isCanalNoRuido(channel: List[List[float]]) -> bool:
                     return False
     return True
 
-def isCanalDeterminante(channel: List[List[float]]) -> bool:
+def isCanalDeterminante(channel: list[list[float]]) -> bool:
     for i in range(len(channel)):
         amount = 0
         for j in range(len(channel[0])):
@@ -139,7 +138,7 @@ def isCanalDeterminante(channel: List[List[float]]) -> bool:
             return False
     return True
 
-def isCanalUniforme(channel: List[List[float]]) -> bool:
+def isCanalUniforme(channel: list[list[float]]) -> bool:
     if len(channel) < 2:
         return True
     for i in range(1, len(channel)):
@@ -152,7 +151,7 @@ def isCanalUniforme(channel: List[List[float]]) -> bool:
             return False
     return True
 
-def isCanalSimetrico(channel: List[List[float]]) -> bool:
+def isCanalSimetrico(channel: list[list[float]]) -> bool:
     if len(channel) != len(channel[0]):
         return False
     for i in range(len(channel)):
@@ -167,13 +166,13 @@ def isCanalSimetrico(channel: List[List[float]]) -> bool:
             return False
     return True
 
-def calculateCapacidadNoRuido(channel: List[List[float]]) -> float:
+def calculateCapacidadNoRuido(channel: list[list[float]]) -> float:
     return math.log2(len(channel))
 
-def calculateCapacidadDeterminante(channel: List[List[float]]) -> float:
+def calculateCapacidadDeterminante(channel: list[list[float]]) -> float:
     return math.log2(len(channel[0]))
 
-def calculateCapacidadUniforme(channel: List[List[float]]) -> float:
+def calculateCapacidadUniforme(channel: list[list[float]]) -> float:
     log2NroSalida = math.log2(len(channel[0]))
     amount = 0.0
     for pij in channel[0]:
@@ -181,7 +180,7 @@ def calculateCapacidadUniforme(channel: List[List[float]]) -> float:
             amount += pij * math.log2(1 / pij)
     return log2NroSalida - amount
 
-def calcularCapacidad(channel: List[List[float]]) -> float:
+def calcularCapacidad(channel: list[list[float]]) -> float:
     if isCanalNoRuido(channel):
         return calculateCapacidadNoRuido(channel)
     if isCanalDeterminante(channel):
@@ -193,7 +192,7 @@ def calcularCapacidad(channel: List[List[float]]) -> float:
         return C
     raise NotImplementedError('Canal general: use optimización numérica')
 
-def calculateCapacidadBinario(channel: List[List[float]], step: float=0.0001) -> Tuple[float, float]:
+def calculateCapacidadBinario(channel: list[list[float]], step: float=0.0001) -> tuple[float, float]:
     C = -1
     p_opt = 0
     p = 0
@@ -206,10 +205,10 @@ def calculateCapacidadBinario(channel: List[List[float]], step: float=0.0001) ->
         p += step
     return (p_opt, C)
 
-def generarComposedChannel(channelA: List[List[float]], channelB: List[List[float]]) -> List[List[float]]:
+def generarComposedChannel(channelA: list[list[float]], channelB: list[list[float]]) -> list[list[float]]:
     return getMatrixProduct(channelA, channelB)
 
-def isReduccionSuficiente(channel: List[List[float]], col1: int, col2: int) -> bool:
+def isReduccionSuficiente(channel: list[list[float]], col1: int, col2: int) -> bool:
     const = 0
     tolerance = 1e-05
     isCalculated = False
@@ -230,13 +229,13 @@ def isReduccionSuficiente(channel: List[List[float]], col1: int, col2: int) -> b
             return False
     return True
 
-def combinateCols(channel: List[List[float]], col1: int, col2: int) -> List[List[float]]:
+def combinateCols(channel: list[list[float]], col1: int, col2: int) -> list[list[float]]:
     for i in range(len(channel)):
         channel[i][col1] += channel[i][col2]
         del channel[i][col2]
     return channel
 
-def getCanalDeterminante(channel: List[List[float]], col1: int, col2: int) -> List[List[float]]:
+def getCanalDeterminante(channel: list[list[float]], col1: int, col2: int) -> list[list[float]]:
     result = getMatrixZeros(len(channel[0]), len(channel[0]) - 1)
     j = 0
     for i in range(len(channel[0])):
@@ -246,7 +245,7 @@ def getCanalDeterminante(channel: List[List[float]], col1: int, col2: int) -> Li
     result[col2][col1] = 1
     return result
 
-def getReducedChannel(channel: List[List[float]]) -> List[List[float]]:
+def getReducedChannel(channel: list[list[float]]) -> list[list[float]]:
     isReductable = True
     while isReductable:
         col1 = -1
@@ -266,7 +265,7 @@ def getReducedChannel(channel: List[List[float]]) -> List[List[float]]:
             isReductable = False
     return channel
 
-def probabilidadError(channel: List[List[float]], P: List[float]) -> float:
+def probabilidadError(channel: list[list[float]], P: list[float]) -> float:
     if not channel or len(channel) != len(channel[0]):
         raise ValueError('La matriz del canal debe ser cuadrada')
     n = len(channel)
@@ -292,12 +291,12 @@ def probabilidadError(channel: List[List[float]], P: List[float]) -> float:
         error += P[i] * (fila_sum - correcto)
     return error
 
-def askMatrix() -> List[List[float]]:
+def askMatrix() -> list[list[float]]:
     print('Ingrese la matriz de canal fila por fila, separando los valores con espacios.')
     print('Puede ingresar fracciones (ej: 1/3).')
     print("Ingrese una linea vacia para finalizar la entrada.")
-    matrix: List[List[float]] = []
-    expected_cols: Optional[int] = None
+    matrix: list[list[float]] = []
+    expected_cols: optional[int] = None
     while True:
         line = input('> ').strip()
         if line == '':
@@ -315,7 +314,7 @@ def askMatrix() -> List[List[float]]:
             print(f'Entrada invalida ({e}). Reingrese la fila. Ej: "0.5 1/3 2/3"')
     return matrix
 
-def askPrioriProbabilities(num_symbols: int) -> List[float]:
+def askPrioriProbabilities(num_symbols: int) -> list[float]:
     print(f'\nIngrese las probabilidades a priori de los {num_symbols} simbolos de entrada.')
     print('Puede ingresar fracciones (ej: 1/3) o decimales (ej: 0.333).')
     print('Separe los valores con espacios. Las probabilidades deben sumar 1.')
@@ -338,7 +337,7 @@ def askPrioriProbabilities(num_symbols: int) -> List[float]:
         except Exception as e:
             print(f'Entrada invalida ({e}). Reingrese. Ej: "0.25 0.25 0.5"')
 
-def printChannelMetrics(label: str, channel: List[List[float]], P: List[float]) -> None:
+def printChannelMetrics(label: str, channel: list[list[float]], P: list[float]) -> None:
     print(f'\n=== Canal {label} ===')
     print(f'Dimension: {len(channel)}x{len(channel[0])}')
     print(f'Matriz:')
