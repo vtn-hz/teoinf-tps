@@ -1,7 +1,5 @@
 import math
 
-MENSAJE = "ABRACADABRA"
-
 def calculateI(pi):
     if pi <= 0:
         raise ValueError('La probabilidad debe ser mayor que 0')
@@ -97,6 +95,8 @@ def redundanciaCodigo(C, P):
     return 1 - rendimientoCodigo(C, P)
 
 def main():
+    MENSAJE = "ABRACADABRA"
+
     print('=' * 70)
     print('UNIDAD 4: ANÁLISIS DE CÓDIGOS')
     print('=' * 70)

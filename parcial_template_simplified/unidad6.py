@@ -1,23 +1,5 @@
 import math
 
-CANAL_1 = [
-    [0.9, 0.1, 0.0],
-    [0.0, 0.9, 0.1],
-    [0.1, 0.0, 0.9]
-]
-
-PROB_PRIORI_1 = [0.4, 0.35, 0.25]
-
-CANAL_2 = [
-    [0.8, 0.15, 0.05],
-    [0.1, 0.8, 0.1],
-    [0.05, 0.15, 0.8]
-]
-
-SIMBOLOS_A = ['a1', 'a2', 'a3']
-SIMBOLOS_B = ['b1', 'b2', 'b3']
-SIMBOLOS_C = ['c1', 'c2', 'c3']
-
 def calculateI(pi):
     if pi <= 0:
         return 0
@@ -187,6 +169,26 @@ def analizar_canal(nombre, matriz, prob_priori, simbolos_entrada, simbolos_salid
     }
 
 def main():
+
+    CANAL_1 = [
+        [0.9, 0.1, 0.0],
+        [0.0, 0.9, 0.1],
+        [0.1, 0.0, 0.9]
+    ]
+
+    PROB_PRIORI_1 = [0.4, 0.35, 0.25]
+
+    CANAL_2 = [
+        [0.8, 0.15, 0.05],
+        [0.1, 0.8, 0.1],
+        [0.05, 0.15, 0.8]
+    ]
+
+    SIMBOLOS_A = ['a1', 'a2', 'a3']
+    SIMBOLOS_B = ['b1', 'b2', 'b3']
+    SIMBOLOS_C = ['c1', 'c2', 'c3']
+
+
     print('=' * 70)
     print('UNIDAD 6: COMPOSICIÓN DE CANALES')
     print('=' * 70)

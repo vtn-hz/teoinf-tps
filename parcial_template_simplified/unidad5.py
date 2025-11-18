@@ -1,15 +1,15 @@
 import math
 
-MATRIZ_CANAL = [
-    [0.6, 0.3, 0.1],
-    [0.1, 0.8, 0.1],
-    [0.2, 0.2, 0.6]
-]
+def getSymbolOcurrences(phrase):
+    occurrences = {}
+    for si in phrase:
+        occurrences[si] = occurrences.get(si, 0) + 1
+    return occurrences
 
-PROB_PRIORI = [0.5, 0.3, 0.2]
-
-SIMBOLOS_ENTRADA = ['a1', 'a2', 'a3']
-SIMBOLOS_SALIDA = ['b1', 'b2', 'b3']
+def buildS(source):
+    occurrences = getSymbolOcurrences(source)
+    frequencies = {symbol: count / len(source) for symbol, count in occurrences.items()}
+    return dict(sorted(frequencies.items(), key=lambda item: item[0]))
 
 def calculateI(pi):
     if pi <= 0:
@@ -103,6 +103,18 @@ def informacionMutuaABSimple(Pa, channel):
     return result
 
 def main():
+
+    MATRIZ_CANAL = [
+        [0.6, 0.3, 0.1],
+        [0.1, 0.8, 0.1],
+        [0.2, 0.2, 0.6]
+    ]
+
+    PROB_PRIORI = [0.5, 0.3, 0.2]
+
+    SIMBOLOS_ENTRADA = ['a1', 'a2', 'a3']
+    SIMBOLOS_SALIDA = ['b1', 'b2', 'b3']
+
     print('=' * 70)
     print('UNIDAD 5: ANÁLISIS DE CANAL')
     print('=' * 70)
