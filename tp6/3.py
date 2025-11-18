@@ -38,7 +38,7 @@ def main() -> None:
     ]
     
     printMatrix("Matriz de canal B:", B)
-    print("Equivocacion: ", calculateEquivocacion(probsOutA, A))
+    print("Equivocacion: ", calculateEquivocacion(probsOutA, B))
     probsOutB = getProbsOutSymbols(probsOutA, B) 
     print("Probabilidades de salida B: ", probsOutB)
     print("Informacion mutua I(A, B) : ", informacionMutuaABSimple(probsOutA, B))
