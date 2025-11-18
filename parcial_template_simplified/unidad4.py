@@ -94,6 +94,62 @@ def rendimientoCodigo(C, P):
 def redundanciaCodigo(C, P):
     return 1 - rendimientoCodigo(C, P)
 
+def hamming(C):
+    if len(C) <= 1:
+        raise Exception("No hay cantidad de códigos suficientes")
+    
+    _min = []
+    for i in range(len(C)):
+        for j in range(i + 1, len(C)):
+            dif_amount = sum(1 for k in range(len(C[i])) if C[i][k] != C[j][k])
+            _min.append(dif_amount)
+    
+    return min(_min)
+
+def erroresDetectables(C):
+    return hamming(C) - 1
+
+def erroresCorregibles(C):
+    return (hamming(C) - 1) // 2
+
+def getBinMatrixFromStr(message):
+    binary_matrix = []
+    for char in message:
+        binary_row = list(map(int, format(ord(char), '07b')))
+        binary_matrix.append(binary_row)
+    return binary_matrix
+
+def addHorizontalParity(matrix, par=True):
+    for i in range(len(matrix)):
+        bitAmount = 0 if par else 1
+        for j in range(len(matrix[i])):
+            bitAmount += matrix[i][j]
+        matrix[i].append(bitAmount % 2)
+    return matrix
+
+def addVerticalParity(matrix, par=True):
+    parityRow = [-1] * len(matrix[0])
+    for j in range(len(matrix[0])):
+        bitAmount = 0 if par else 1
+        for i in range(len(matrix)):
+            bitAmount += matrix[i][j]
+        parityRow[j] = bitAmount % 2
+    matrix.insert(0, parityRow)
+    return matrix
+
+def getMatrixMultiparidad(message, par=True):
+    matrix = getBinMatrixFromStr(message)
+    matrix = addHorizontalParity(matrix, par)
+    matrix = addVerticalParity(matrix, par)
+    return matrix
+
+def printMatrix(matrix):
+    for row in matrix:
+        print('   ', end='')
+        for bit in row:
+            print(bit, end='')
+        print()
+
 def main():
     MENSAJE = "ABRACADABRA"
 
@@ -163,6 +219,64 @@ def main():
     print(f"\n   Redundancia R = 1 - η")
     print(f"     Huffman:      R = 1 - {rend_huffman:.4f} = {red_huffman:.4f}")
     print(f"     Shannon-Fano: R = 1 - {rend_shannon:.4f} = {red_shannon:.4f}")
+    
+    print(f"\n7. CONTROL DE ERRORES")
+    print(f"   Para códigos de longitud fija (ajustados con padding):")
+    print(f"   ")
+    
+    max_len = max(len(c) for c in C_huffman)
+    C_huffman_padded = [c.ljust(max_len, '0') for c in C_huffman]
+    C_shannon_padded = [c.ljust(max_len, '0') for c in C_shannon]
+    
+    print(f"   Huffman (padded):")
+    for simbolo, cod in zip(simbolos, C_huffman_padded):
+        print(f"     {simbolo}: {cod}")
+    
+    try:
+        d_huffman = hamming(C_huffman_padded)
+        err_det_huffman = erroresDetectables(C_huffman_padded)
+        err_corr_huffman = erroresCorregibles(C_huffman_padded)
+        
+        print(f"   ")
+        print(f"   Distancia de Hamming (d):     {d_huffman}")
+        print(f"   Errores detectables (d-1):    {err_det_huffman}")
+        print(f"   Errores corregibles ⌊(d-1)/2⌋: {err_corr_huffman}")
+    except Exception as e:
+        print(f"   Error al calcular: {e}")
+    
+    print(f"   ")
+    print(f"   Shannon-Fano (padded):")
+    for simbolo, cod in zip(simbolos, C_shannon_padded):
+        print(f"     {simbolo}: {cod}")
+    
+    try:
+        d_shannon = hamming(C_shannon_padded)
+        err_det_shannon = erroresDetectables(C_shannon_padded)
+        err_corr_shannon = erroresCorregibles(C_shannon_padded)
+        
+        print(f"   ")
+        print(f"   Distancia de Hamming (d):     {d_shannon}")
+        print(f"   Errores detectables (d-1):    {err_det_shannon}")
+        print(f"   Errores corregibles ⌊(d-1)/2⌋: {err_corr_shannon}")
+    except Exception as e:
+        print(f"   Error al calcular: {e}")
+    
+    print(f"\n8. MATRIZ DE PARIDAD (MULTIPARIDAD)")
+    print(f"   Generando matriz de paridad para el mensaje...")
+    print(f"   ")
+    
+    try:
+        matriz_paridad = getMatrixMultiparidad(MENSAJE, par=True)
+        print(f"   Matriz de paridad (paridad par):")
+        print(f"   Filas: {len(matriz_paridad)}, Columnas: {len(matriz_paridad[0])}")
+        print(f"   ")
+        printMatrix(matriz_paridad)
+        print(f"   ")
+        print(f"   Primera fila: paridad vertical")
+        print(f"   Última columna: paridad horizontal")
+        print(f"   Esquina superior derecha: paridad cruzada")
+    except Exception as e:
+        print(f"   Error al generar matriz: {e}")
     
     print(f"\n" + "=" * 70)
     print("FIN DEL ANÁLISIS")
