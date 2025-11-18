@@ -392,7 +392,7 @@ def main():
             print('\nCanales actuales:')
             for label in channel_labels:
                 ch = channels[label]
-                print(f'  {label}: {len(ch)}x{len(ch[0])} - P(A) = {[round(p, 2) for p in priors[label]]}')
+                print(f'  {label}: {len(ch)}x{len(ch[0])} - P(entrada) = {[round(p, 2) for p in priors[label]]}')
         else:
             print('\nNo hay canales ingresados')
         
@@ -426,7 +426,22 @@ def main():
                         print('Error: matriz invalida')
                         input('Presione Enter para continuar...')
                         continue
-                    P_user = askPrioriProbabilities(len(channel))
+                    
+                    if not channel_labels:
+                        P_user = askPrioriProbabilities(len(channel))
+                    else:
+                        last_label = channel_labels[-1]
+                        last_channel = channels[last_label]
+                        last_priors = priors[last_label]
+                        
+                        if len(last_channel[0]) != len(channel):
+                            print(f'Error: salidas del canal {last_label} ({len(last_channel[0])}) no coinciden con entradas del nuevo canal ({len(channel)})')
+                            input('Presione Enter para continuar...')
+                            continue
+                        
+                        P_user = getProbsOutSymbols(last_priors, last_channel)
+                        print(f'\nUsando probabilidades de salida del canal {last_label} como entrada:')
+                        print(f'P(entrada) = {[round(p, 4) for p in P_user]}')
                 
                 elif mode == '2':
                     print('Ingrese secuencia de entrada:')
@@ -445,8 +460,23 @@ def main():
                         continue
                     
                     channel = getPrioriMatrixByInputOutput(input_seq, output_seq)
-                    probs_dict = getProbabilidadPriori(input_seq)
-                    P_user = [probs_dict[key] for key in sorted(probs_dict.keys())]
+                    
+                    if not channel_labels:
+                        probs_dict = getProbabilidadPriori(input_seq)
+                        P_user = [probs_dict[key] for key in sorted(probs_dict.keys())]
+                    else:
+                        last_label = channel_labels[-1]
+                        last_channel = channels[last_label]
+                        last_priors = priors[last_label]
+                        
+                        if len(last_channel[0]) != len(channel):
+                            print(f'Error: salidas del canal {last_label} ({len(last_channel[0])}) no coinciden con entradas del nuevo canal ({len(channel)})')
+                            input('Presione Enter para continuar...')
+                            continue
+                        
+                        P_user = getProbsOutSymbols(last_priors, last_channel)
+                        print(f'\nUsando probabilidades de salida del canal {last_label} como entrada:')
+                        print(f'P(entrada) = {[round(p, 4) for p in P_user]}')
                 
                 else:
                     print('Modo invalido')
@@ -565,7 +595,8 @@ def main():
                     if add == 's':
                         next_label = chr(65 + len(channel_labels))
                         channels[next_label] = result_channel
-                        priors[next_label] = [1 / len(result_channel)] * len(result_channel)
+                        first_priors = priors[channel_labels[0]]
+                        priors[next_label] = first_priors
                         channel_labels.append(next_label)
                         print(f'\nCanal compuesto agregado como {next_label}')
                     
