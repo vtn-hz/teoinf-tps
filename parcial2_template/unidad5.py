@@ -47,17 +47,22 @@ RESUMEN TEÓRICO:
    b) H(B): Entropía de la salida
       Mide la incertidumbre de la salida del canal.
    
-   c) H(A|B): Equivocación o Ruido
+   c) H(A|B=bj): Entropía condicional para cada salida bj
+      Para cada símbolo de salida bj, mide la incertidumbre sobre la entrada.
+      H(A|bj) = - Σi P(ai|bj) * log2(P(ai|bj))
+      Permite analizar el comportamiento del canal para cada símbolo de salida.
+   
+   d) H(A|B): Equivocación o Ruido
       Incertidumbre que queda sobre A después de observar B.
       H(A|B) = Σj P(bj) * H(A|bj) = Σi,j P(ai,bj) * log2(1/P(ai|bj))
       Si H(A|B) = 0, el canal no tiene ruido (sin pérdida de información).
    
-   d) H(B|A): Pérdida
+   e) H(B|A): Pérdida
       Incertidumbre que queda sobre B después de conocer A.
       H(B|A) = Σi P(ai) * H(B|ai) = Σi,j P(ai,bj) * log2(1/P(bj|ai))
       Mide la degradación introducida por el canal.
    
-   e) H(A,B): Entropía Conjunta
+   f) H(A,B): Entropía Conjunta
       H(A,B) = Σi,j P(ai,bj) * log2(1/P(ai,bj))
       Relaciones: H(A,B) = H(A) + H(B|A) = H(B) + H(A|B)
 
@@ -754,6 +759,7 @@ def main():
     
     H_A = calculateHPriori(priori_list)
     H_B = calculateHPosterioriTotal(priori_list, channel)
+    H_A_given_bj = calculateHPosteriori(priori_list, channel)
     H_AB = calculateRuido(priori_list, channel)
     H_BA = calculatePerdida(priori_list, channel)
     H_conj = calculateHCanal(priori_list, channel)
@@ -761,7 +767,12 @@ def main():
     print(f"\n📊 Entropías calculadas:")
     print(f"   H(A)   = {H_A:.4f} bits  (entropía de entrada)")
     print(f"   H(B)   = {H_B:.4f} bits  (entropía de salida)")
-    print(f"   H(A|B) = {H_AB:.4f} bits  (equivocación/ruido)")
+    
+    print(f"\n   Entropías condicionales H(A|B=bj) para cada salida bj:")
+    for j, h_val in enumerate(H_A_given_bj):
+        print(f"   H(A|b{j+1}) = {h_val:.4f} bits")
+    
+    print(f"\n   H(A|B) = {H_AB:.4f} bits  (equivocación/ruido)")
     print(f"   H(B|A) = {H_BA:.4f} bits  (pérdida)")
     print(f"   H(A,B) = {H_conj:.4f} bits  (entropía conjunta)")
     

@@ -63,6 +63,7 @@ python3 tp5/14.py
 ### utils.canales
 - `priori.entropy`: Entropía a priori
 - `posteriori.entropy`: Entropía a posteriori
+- `entropy_media`: Entropías medias (ruido y pérdida)
 - `informacion_mutua`: Información mutua
 
 ### utils.errores
@@ -118,7 +119,7 @@ El directorio `utils/` contiene módulos reutilizables organizados por tema:
 - **`posteriori/`** - Análisis a posteriori
   - `probs.py` - Probabilidades a posteriori P(A|B), P(A,B)
   - `entropy.py` - Entropía a posteriori H(A|B)
-  - `entropy_media.py` - Entropías medias (ruido y pérdida)
+- **`entropy_media.py`** - Entropías medias (ruido y pérdida)
 - **`informacion_mutua.py`** - Información mutua I(A;B)
 - **`entropia_canal.py`** - Entropía conjunta H(A,B)
 - **`propiedades.py`** - Propiedades de canales (sin ruido, determinístico, simétrico, uniforme)

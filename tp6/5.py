@@ -1,7 +1,7 @@
 import os
 from utils.canales.canales_serie import combinateCols, getReducedChannel, isReduccionSuficiente, getCanalDeterminante
 from utils.canales.informacion_mutua import informacionMutuaABSimple
-from utils.canales.posteriori.entropy_media import calculateRuido, calculatePerdida
+from utils.canales.entropy_media import calculateRuido, calculatePerdida
 from utils.canales.propiedades import isCanalNoRuido, isCanalDeterminante
 from utils.matrix import printMatrix as originalPrintMatrix
 

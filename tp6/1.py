@@ -1,6 +1,6 @@
 from utils.canales.propiedades import *
 from utils.canales.informacion_mutua import *
-from utils.canales.posteriori.entropy_media import *
+from utils.canales.entropy_media import *
     
 def main(matrix: list) -> None:
     print("Contenido de la matriz recibida:")
