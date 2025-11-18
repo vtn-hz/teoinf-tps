@@ -1,46 +1,110 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+import math
 
-"""
-UNIDAD 4: Códigos y Codificación - Versión Simplificada
-Analiza un string fijo y muestra códigos Huffman y Shannon-Fano con métricas.
-Sin input(), ejecución lineal con prints claros.
-"""
-
-import sys
-import os
-# Agregar el directorio raíz al path para imports
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-
-from utils.fuente_nula.alfabetoS import buildS
-from utils.fuente_nula.calculateH import calculateH
-from utils.codigos.algorithm.huffman import huffman
-from utils.codigos.algorithm.shannonfano import shannonfano
-from utils.codigos.metadataCodigo import getLengthMedCodigo
-from utils.codigos.metricas.rendRend import rendimientoCodigo, redundanciaCodigo
-
-# ============================================================================
-# VARIABLES EDITABLES - Modificar aquí para cambiar el análisis
-# ============================================================================
-
-# String a analizar
 MENSAJE = "ABRACADABRA"
 
-# ============================================================================
-# PROGRAMA PRINCIPAL
-# ============================================================================
+def calculateI(pi):
+    if pi <= 0:
+        raise ValueError('La probabilidad debe ser mayor que 0')
+    return math.log2(1 / pi)
+
+def calculateH(P):
+    return sum((pi * calculateI(pi) for pi in P if pi > 0))
+
+def getSymbolOcurrences(phrase):
+    occurrences = {}
+    for si in phrase:
+        occurrences[si] = occurrences.get(si, 0) + 1
+    return occurrences
+
+def buildS(source):
+    occurrences = getSymbolOcurrences(source)
+    frequencies = {symbol: count / len(source) for symbol, count in occurrences.items()}
+    return dict(sorted(frequencies.items(), key=lambda item: item[0]))
+
+def initializeHuffman(P):
+    result = []
+    for i, p in enumerate(P):
+        result.append((p, [i]))
+    return result
+
+def huffmanAlgorithm(result, P):
+    huffman = initializeHuffman(P)
+    huffman.sort(key=lambda x: x[0], reverse=True)
+    while len(huffman) > 1:
+        p1, c1 = huffman.pop()
+        p2, c2 = huffman.pop()
+        for i in c1:
+            result[i] = '0' + result[i]
+        for i in c2:
+            result[i] = '1' + result[i]
+        huffman.append((p1 + p2, c1 + c2))
+        huffman.sort(key=lambda x: x[0], reverse=True)
+    return result
+
+def huffman(P):
+    result = [''] * len(P)
+    return huffmanAlgorithm(result, P)
+
+def initializeShannonFano(P):
+    return sorted([[pi, i] for i, pi in enumerate(P)], key=lambda item: item[0], reverse=True)
+
+def propagateSubfix(result, P, fix):
+    for pi, i in P:
+        result[i] += fix
+
+def shannonfanoAlgorithm(result, Pindex):
+    if len(Pindex) <= 1:
+        return
+    total = sum((pi for pi, i in Pindex)) / 2
+    acum = 0
+    lastDif = float('inf')
+    splitLocation = 0
+    for idx, (pi, i) in enumerate(Pindex):
+        acum += pi
+        if acum >= total:
+            if min(lastDif, abs(total - acum)) == lastDif:
+                splitLocation = idx
+            else:
+                splitLocation = idx + 1
+            firstPart = Pindex[:splitLocation]
+            secondPart = Pindex[splitLocation:]
+            propagateSubfix(result, firstPart, '1')
+            propagateSubfix(result, secondPart, '0')
+            shannonfanoAlgorithm(result, firstPart)
+            shannonfanoAlgorithm(result, secondPart)
+            return
+        lastDif = abs(total - acum)
+
+def shannonfano(P):
+    result = [''] * len(P)
+    Pindex = initializeShannonFano(P)
+    shannonfanoAlgorithm(result, Pindex)
+    return result
+
+def getLengthsCodigo(cods):
+    return [len(cod) for cod in cods]
+
+def getLengthMedCodigo(cods, pbs):
+    l = getLengthsCodigo(cods)
+    return sum((li * pbi for li, pbi in zip(l, pbs)))
+
+def rendimientoCodigo(C, P):
+    H = calculateH(P)
+    Lmed = getLengthMedCodigo(C, P)
+    return H / Lmed
+
+def redundanciaCodigo(C, P):
+    return 1 - rendimientoCodigo(C, P)
 
 def main():
-    print("=" * 70)
-    print("UNIDAD 4: ANÁLISIS DE CÓDIGOS")
-    print("=" * 70)
+    print('=' * 70)
+    print('UNIDAD 4: ANÁLISIS DE CÓDIGOS')
+    print('=' * 70)
     
-    # 1. Analizar el mensaje
     print(f"\n1. MENSAJE A ANALIZAR")
     print(f"   Mensaje: '{MENSAJE}'")
     print(f"   Longitud: {len(MENSAJE)} símbolos")
     
-    # 2. Construir distribución de probabilidades
     S = buildS(MENSAJE)
     simbolos = list(S.keys())
     probabilidades = list(S.values())
@@ -51,12 +115,10 @@ def main():
         ocurrencias = int(prob * len(MENSAJE))
         print(f"   P({simbolo}) = {prob:.4f} ({ocurrencias} ocurrencias)")
     
-    # 3. Calcular entropía
     H = calculateH(probabilidades)
     print(f"\n3. ENTROPÍA")
     print(f"   H(X) = {H:.4f} bits/símbolo")
     
-    # 4. Generar códigos
     print(f"\n4. CÓDIGOS GENERADOS")
     C_huffman = huffman(probabilidades)
     C_shannon = shannonfano(probabilidades)
@@ -66,7 +128,6 @@ def main():
     for simbolo, prob, huff, shan in zip(simbolos, probabilidades, C_huffman, C_shannon):
         print(f"   {simbolo:<10} {prob:<12.4f} {huff:<15} {shan:<15}")
     
-    # 5. Calcular métricas
     print(f"\n5. MÉTRICAS DE CÓDIGOS")
     
     L_huffman = getLengthMedCodigo(C_huffman, probabilidades)
@@ -82,7 +143,6 @@ def main():
     print(f"   {'Huffman':<20} {L_huffman:<15.4f} {rend_huffman:<15.4f} {red_huffman:<15.4f}")
     print(f"   {'Shannon-Fano':<20} {L_shannon:<15.4f} {rend_shannon:<15.4f} {red_shannon:<15.4f}")
     
-    # 6. Relaciones matemáticas
     print(f"\n6. RELACIONES MATEMÁTICAS")
     print(f"   Teorema de Shannon: H(X) ≤ L < H(X) + 1")
     print(f"   ")
@@ -107,7 +167,6 @@ def main():
     print(f"\n" + "=" * 70)
     print("FIN DEL ANÁLISIS")
     print("=" * 70)
-
 
 if __name__ == "__main__":
     main()

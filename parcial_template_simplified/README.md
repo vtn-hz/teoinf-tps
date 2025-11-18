@@ -7,7 +7,8 @@ Versión simplificada de las unidades 4, 5 y 6 para preparación de parciales.
 - ✅ **Sin input()**: Ejecución lineal sin interacción
 - ✅ **Variables editables al inicio**: Fácil modificación de ejemplos
 - ✅ **Outputs claros y concisos**: Solo cálculos clave
-- ✅ **Usa funciones existentes**: No duplica código del repositorio
+- ✅ **Autocontenido**: Todas las funciones implementadas inline (sin imports de utils/)
+- ✅ **Sin comentarios**: Código limpio y mínimo
 - ✅ **Presentación mínima**: Sin menús ni opciones complejas
 
 ## Archivos
@@ -101,30 +102,33 @@ SIMBOLOS_C = ['c1', 'c2', 'c3']
 python3 parcial_template_simplified/unidad6.py
 ```
 
-## Funciones Utilizadas
+## Funciones Implementadas
 
-Estos archivos utilizan las funciones existentes del repositorio:
+Estos archivos son autocontenidos con todas las funciones implementadas inline:
 
 ### unidad4.py
-- `utils.fuente_nula.alfabetoS.buildS` - Construcción de alfabeto y probabilidades
-- `utils.fuente_nula.calculateH` - Cálculo de entropía
-- `utils.codigos.algorithm.huffman` - Algoritmo de Huffman
-- `utils.codigos.algorithm.shannonfano` - Algoritmo de Shannon-Fano
-- `utils.codigos.metadataCodigo` - Longitud media de códigos
-- `utils.codigos.metricas.rendRend` - Rendimiento y redundancia
+- `calculateI`, `calculateH` - Información y entropía
+- `buildS` - Construcción de alfabeto y probabilidades desde string
+- `huffman`, `huffmanAlgorithm` - Algoritmo de Huffman
+- `shannonfano`, `shannonfanoAlgorithm` - Algoritmo de Shannon-Fano
+- `getLengthMedCodigo` - Longitud media de códigos
+- `rendimientoCodigo`, `redundanciaCodigo` - Rendimiento y redundancia
 
 ### unidad5.py
-- `utils.canales.priori.entropy` - Entropía a priori
-- `utils.canales.posteriori.probs` - Probabilidades a posteriori y conjuntas
-- `utils.canales.posteriori.entropy` - Entropía a posteriori
-- `utils.canales.entropy_media` - Ruido y pérdida
-- `utils.canales.entropia_canal` - Entropía conjunta
-- `utils.canales.informacion_mutua` - Información mutua
+- `calculateI`, `calculateH` - Información y entropía
+- `getProbsOutSymbols` - Probabilidades de salida P(B)
+- `getPosterioriMatrix` - Matriz a posteriori P(A|B)
+- `getMatrixSimultaneusEvent` - Matriz conjunta P(A,B)
+- `calculateRuido`, `calculatePerdida` - Ruido y pérdida
+- `calculateHCanal` - Entropía conjunta
+- `informacionMutuaABSimple` - Información mutua
 
 ### unidad6.py
-- `utils.canales.metricas` - Capacidad del canal
-- `utils.canales.canales_serie` - Composición de canales
 - Todas las funciones de unidad5.py
+- `getMatrixProduct` - Multiplicación matricial
+- `isCanalNoRuido`, `isCanalDeterminante`, `isCanalUniforme` - Propiedades del canal
+- `calcularCapacidad` - Capacidad del canal
+- `generarComposedChannel` - Composición de canales
 
 ## Ventajas
 
@@ -132,18 +136,21 @@ Estos archivos utilizan las funciones existentes del repositorio:
 2. **Fácil de modificar**: Cambiar solo las variables al inicio
 3. **Comprensión clara**: Outputs organizados por secciones
 4. **Sin complejidad extra**: No hay menús ni configuraciones
-5. **Autónomo**: Funciona independientemente del resto del repositorio
+5. **Autónomo**: Funciona independientemente, sin imports externos
+6. **Código limpio**: Sin comentarios, solo implementación
+7. **Basado en no_comments_template**: Sigue el mismo estilo que parcial2_template/no_comments_template/
 
 ## Diferencias con parcial2_template
 
 | Característica | parcial2_template | parcial_template_simplified |
 |---------------|-------------------|---------------------------|
-| Líneas de código | 1000+ por archivo | ~150-200 por archivo |
-| Documentación | Exhaustiva | Mínima |
-| Dependencias | Ninguna (autocontenido) | Usa utils/ del repo |
+| Líneas de código | 1000+ por archivo | ~150-300 por archivo |
+| Documentación | Exhaustiva | Ninguna (solo código) |
+| Dependencias | Ninguna (autocontenido) | Ninguna (autocontenido) |
 | Input del usuario | Sí (una entrada) | No (todo definido arriba) |
 | Explicaciones teóricas | Extensas en comentarios | Solo en outputs |
-| Funciones duplicadas | Todas incluidas | Solo imports |
+| Funciones duplicadas | Todas incluidas | Todas incluidas |
+| Comentarios en código | Sí | No |
 
 ## Uso Recomendado
 
