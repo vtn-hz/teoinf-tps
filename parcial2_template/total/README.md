@@ -7,8 +7,8 @@ Este directorio contiene una versión **standalone** (independiente) de todas la
 ### `utils_standalone.py`
 Archivo Python que contiene **solo las funciones utilizadas en tp4, tp5 y tp6**:
 
-- **976 líneas** de código
-- **78 funciones** implementadas (incluyendo dependencias internas)
+- **~1050 líneas** de código
+- **80 funciones** implementadas (incluyendo dependencias internas)
 - **Sin dependencias internas** (no requiere imports de otros módulos del proyecto)
 - Solo usa librerías estándar: `math`, `random`, `os`
 
@@ -89,7 +89,8 @@ from parcial2_template.total.utils_standalone import (
 ### UNIDAD 6: Capacidad y Probabilidad de Error
 
 **Capacidad:**
-- Capacidad de canal (general)
+- Capacidad de canal (general, binario)
+- Probabilidad de error (regla ML)
 
 **Canales Compuestos:**
 - Canales en serie
@@ -182,10 +183,10 @@ Para encontrar una función específica, consulta `GUIA.md` que incluye:
 
 ## 📊 Estadísticas
 
-- **Funciones totales**: 78 (incluyendo dependencias internas)
-- **Líneas de código**: 976
+- **Funciones totales**: 80 (incluyendo dependencias internas)
+- **Líneas de código**: ~1050
 - **Unidades cubiertas**: 3 (Unidades 4, 5 y 6)
-- **Funciones directamente usadas en tp4/tp5/tp6**: 50
+- **Funciones directamente usadas en tp4/tp5/tp6**: 52
 - **Funciones de soporte/dependencias**: 28
 
 ---

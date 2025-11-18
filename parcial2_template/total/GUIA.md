@@ -208,6 +208,13 @@ from parcial2_template.total.utils_standalone import calculateH, huffman
 | Concepto | Función | Importar con |
 |----------|---------|--------------|
 | **C (general)** | `calcularCapacidad(channel)` | `from parcial2_template.total.utils_standalone import calcularCapacidad` |
+| **C (binario por búsqueda)** | `calculateCapacidadBinario(channel, step)` | `from parcial2_template.total.utils_standalone import calculateCapacidadBinario` |
+
+### UNIDAD 6: Probabilidad de Error
+
+| Concepto | Función | Importar con |
+|----------|---------|--------------|
+| **PE (regla ML)** | `probabilidadError(channel, P)` | `from parcial2_template.total.utils_standalone import probabilidadError` |
 
 ### UNIDAD 6: Canales Compuestos
 
@@ -299,6 +306,30 @@ print(f"Errores detectables: {detectables}")
 print(f"Errores corregibles: {corregibles}")
 ```
 
+### Ejemplo 4: Capacidad de Canal Binario y Probabilidad de Error (UNIDAD 6)
+
+```python
+from parcial2_template.total.utils_standalone import (
+    calculateCapacidadBinario, probabilidadError
+)
+
+# Canal binario simétrico
+canal = [
+    [0.9, 0.1],
+    [0.1, 0.9]
+]
+
+# Calcular capacidad (búsqueda numérica)
+p_opt, C = calculateCapacidadBinario(canal, step=0.01)
+print(f"P(a1) óptima: {p_opt:.4f}")
+print(f"Capacidad: {C:.4f} bits")
+
+# Calcular probabilidad de error con regla ML
+Pa = [0.5, 0.5]
+PE = probabilidadError(canal, Pa)
+print(f"Probabilidad de Error (PE): {PE:.4f}")
+```
+
 ---
 
 ## 📝 Notas Importantes
@@ -341,7 +372,10 @@ Las siguientes funciones están disponibles en utils_standalone.py:
 - `calculateRuido`, `calculatePerdida`, `calculateHCanal`
 - `informacionMutuaABSimple`, `informacionMutuaBASimple`
 - `isCanalNoRuido`, `isCanalDeterminante`
-- `calcularCapacidad`
+
+**Capacidad y Probabilidad de Error (Unidad 6):**
+- `calcularCapacidad`, `calculateCapacidadBinario`
+- `probabilidadError`
 
 **Canales en Serie:**
 - `generarComposedChannel`, `isReduccionSuficiente`, `getReducedChannel`
@@ -352,6 +386,6 @@ Las siguientes funciones están disponibles en utils_standalone.py:
 
 ---
 
-**Total de funciones**: 78 (incluyendo dependencias internas)  
+**Total de funciones**: 80 (incluyendo dependencias internas)  
 **Archivo**: `parcial2_template/total/utils_standalone.py`  
-**Líneas**: ~976
+**Líneas**: ~1050
