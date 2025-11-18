@@ -131,6 +131,9 @@ def calculateHCanal(Pa: list[float], channel: list[list[float]]) -> float:
                 result += item * calculateI(item)
     return result
 
+def calculateHAfinCanal( Pa :list, channel: list[list] ) -> float:
+    return calculateHCanal(Pa, channel)
+
 def informacionMutuaABSimple(Pa: list[float], channel: list[list[float]]) -> float:
     simulaneusEvent = getMatrixSimultaneusEvent(Pa, channel)
     outProbs = getProbsOutSymbols(Pa, channel)
