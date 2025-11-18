@@ -1,14 +1,14 @@
 # Total - Utilidades Consolidadas
 
-Este directorio contiene una versión **standalone** (independiente) de todas las funciones de utilidad del proyecto, consolidadas en un único archivo para facilitar su uso en exámenes parciales y trabajos prácticos.
+Este directorio contiene una versión **standalone** (independiente) de todas las funciones de utilidad utilizadas en **tp4, tp5 y tp6**, consolidadas en un único archivo para facilitar su uso en exámenes parciales y trabajos prácticos.
 
 ## 📁 Contenido
 
 ### `utils_standalone.py`
-Archivo Python que contiene **todas las funciones** de los módulos `utils/` consolidadas en un solo lugar:
+Archivo Python que contiene **solo las funciones utilizadas en tp4, tp5 y tp6**:
 
-- **1791 líneas** de código
-- **134 funciones** implementadas
+- **976 líneas** de código
+- **78 funciones** implementadas (incluyendo dependencias internas)
 - **Sin dependencias internas** (no requiere imports de otros módulos del proyecto)
 - Solo usa librerías estándar: `math`, `random`, `os`
 
@@ -17,10 +17,12 @@ Guía completa de referencia que incluye:
 
 - Resumen conceptual de las Unidades 4, 5 y 6
 - Mapeo de teoría a implementación
-- Catálogo completo de funciones con números de línea
-- Instrucciones de importación para cada función
+- Catálogo completo de funciones con instrucciones de importación
 - Ejemplos de uso prácticos
-- Índice alfabético de funciones
+- Lista de todas las funciones incluidas
+
+### `README.md`
+Este archivo - Guía de inicio rápido
 
 ## 🚀 Uso Rápido
 
@@ -43,21 +45,26 @@ from parcial2_template.total.utils_standalone import (
 )
 ```
 
-## 📚 Organización por Unidades
+## 📚 Funciones por Categoría
 
 ### UNIDAD 4: Compresión y Control de Errores
 
 **Compresión:**
 - Entropía y cálculo de información (H, I, Hr, Ir)
 - Algoritmos: Huffman, Shannon-Fano, RLC
-- Propiedades de códigos (instantáneo, unívoco, compacto)
 - Rendimiento y redundancia
 - Teorema de Shannon
+- Extensiones de fuentes
 
 **Control de Errores:**
 - Distancia de Hamming
-- Códigos con paridad (simple y cruzada)
+- Códigos con multiparidad
 - Detección y corrección de errores
+
+**Codificación:**
+- Codificación/decodificación de mensajes
+- Guardar y recuperar archivos comprimidos
+- Cálculo de tasa de compresión
 
 ### UNIDAD 5: Canales de Comunicación
 
@@ -78,33 +85,20 @@ from parcial2_template.total.utils_standalone import (
 **Propiedades:**
 - Canal sin ruido
 - Canal determinante
-- Canal simétrico
-- Canal uniforme
 
 ### UNIDAD 6: Capacidad y Probabilidad de Error
 
 **Capacidad:**
-- Capacidad de canal sin ruido
-- Capacidad de canal determinante
-- Capacidad de canal uniforme
-- Capacidad de canal binario (búsqueda numérica)
+- Capacidad de canal (general)
 
 **Canales Compuestos:**
 - Canales en serie
 - Reducción suficiente
 - Canal reducido
 
-**Probabilidad de Error:**
-- Regla de decisión ML (máxima posibilidad)
-- Cálculo de probabilidad de error PE
+### Utilidades
 
-### Extras: Fuentes de Markov
-
-- Generación de matriz de transición
-- Vector estacionario
-- Entropía de fuente markoviana
-- Verificación de ergodicidad
-- Simulación de fuentes con memoria
+- Impresión de matrices con y sin etiquetas
 
 ## 💡 Ejemplos
 
@@ -139,7 +133,7 @@ print(f"Cumple Teorema de Shannon: {cumple}")
 ```python
 from parcial2_template.total.utils_standalone import (
     calculateRuido, calculatePerdida, informacionMutuaABSimple,
-    isCanalUniforme, calcularCapacidad
+    isCanalNoRuido, calcularCapacidad
 )
 
 # Definir canal
@@ -177,50 +171,25 @@ Para encontrar una función específica, consulta `GUIA.md` que incluye:
 
 1. **Búsqueda por concepto**: Mapeo de teoría a función
 2. **Búsqueda por unidad**: Agrupación por unidades 4, 5 y 6
-3. **Índice alfabético**: Lista completa de funciones ordenadas
-4. **Números de línea**: Ubicación exacta de cada función
-
-## ✅ Verificación
-
-Para verificar que todo funciona correctamente:
-
-```python
-from parcial2_template.total.utils_standalone import *
-
-# Test básico
-assert abs(calculateH([0.5, 0.5]) - 1.0) < 0.001
-assert len(huffman([0.5, 0.3, 0.2])) == 3
-assert hamming(['00', '11']) == 2
-
-print("✓ Todo funcionando correctamente")
-```
+3. **Instrucciones de importación**: Para cada función
 
 ## 📝 Notas Importantes
 
-1. **Archivo único**: No se requiere estructura de directorios de utils/
+1. **Solo funciones usadas en tp4, tp5, tp6**: Este archivo contiene únicamente las funciones que se importan y utilizan en los trabajos prácticos
 2. **Sin dependencias internas**: Funciona de forma completamente independiente
 3. **Compatible**: Python 3.6+
 4. **Testeado**: Todas las funciones principales han sido probadas
 
-## 🎓 Para Exámenes
-
-Este directorio está diseñado específicamente para:
-
-- Tener **todas las funciones en un solo lugar**
-- **Consultar rápidamente** números de línea en GUIA.md
-- **Copiar/importar** fácilmente funciones necesarias
-- **Referencia teórica** integrada con implementación
-
 ## 📊 Estadísticas
 
-- **Funciones totales**: 134
-- **Líneas de código**: 1,791
-- **Líneas de documentación (GUIA.md)**: 533
+- **Funciones totales**: 78 (incluyendo dependencias internas)
+- **Líneas de código**: 976
 - **Unidades cubiertas**: 3 (Unidades 4, 5 y 6)
-- **Ejemplos de uso**: 7 completos en GUIA.md
+- **Funciones directamente usadas en tp4/tp5/tp6**: 50
+- **Funciones de soporte/dependencias**: 28
 
 ---
 
-**Autor**: Generado automáticamente desde utils/  
-**Versión**: 1.0  
+**Criterio de inclusión**: Solo funciones utilizadas en tp4, tp5 y tp6  
+**Versión**: 2.0 (filtrada)  
 **Última actualización**: 2025
